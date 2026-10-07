@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <!-- Makes the layout use the device width. This is required for the CSS mobile layout to work correctly. -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Suggests a blue browser-toolbar color on browsers that support this setting. -->
+  <meta name="theme-color" content="#1e3a8a">
+  <title>MetroMed Clinic</title>
+  <!-- Loads the design rules. style.css must be inside a css folder next to this index.html file. -->
+  <link rel="stylesheet" href="style.css">
+  <!-- Loads the application logic from js/script.js. defer waits until the HTML is parsed before running it. If this path is wrong, the login form will not appear. -->
+  <script src="script.js" defer></script>
+</head>
+<!-- The body contains the visible interface. id uniquely identifies an element; class connects it to CSS and can be shared by several elements. -->
+<body>
+  <!-- Keyboard shortcut to the main content. href="#main" points to the element with id="main". CSS normally hides this link until keyboard focus reaches it. -->
+  <a class="skip-link" href="#main">Skip to content</a>
+  <!-- JavaScript fills this empty area with Login, Create Account or Forgot Password. Only one main content area is shown at a time. -->
+  <main id="auth" class="auth-shell"></main>
+  <!-- hidden keeps the authenticated application invisible until enterApp() runs after login. -->
+  <div id="app" hidden>
+    <!-- The sidebar overlay closes mobile navigation when clicked. aria-label names this otherwise textless button for screen readers. -->
+    <button id="shade" class="shade" aria-label="Close navigation" hidden></button>
+    <!-- Groups the sidebar. CSS fixes it beside the main content on desktop and slides it off-screen on small devices. -->
+    <aside id="sidebar" class="sidebar" aria-label="Main navigation">
+      <!-- The brand link points to #dashboard. span is an inline wrapper; the logo class styles the letter M. -->
+      <a class="brand" href="#dashboard"><span class="logo">M</span><span>MetroMed<small>CLINIC</small></span></a>
+      <!-- A paragraph label above the navigation links. -->
+      <p class="nav-label"></p>
+      <!-- JavaScript inserts the five sidebar links here. nav identifies this section as navigation. -->
+      <nav id="navigation"></nav>
+      <!-- Groups the current account details and logout control at the bottom of the sidebar; this is not a page footer. -->
+      <div class="sidebar-account">
+        <!-- data-action="profile" is a custom attribute read by the JavaScript click handler. user-name and user-initial are filled from the logged-in account. -->
+        <button class="account-link" data-action="profile"><span class="avatar user-initial"></span><span><strong class="user-name"></strong><small>Administrator</small></span></button>
+        <!-- The shared click handler sees data-action="logout" and opens a confirmation before ending the session. -->
+        <button class="logout-button" data-action="logout">Log out</button>
+      </div>
+    </aside>
+    <!-- Wraps the topbar and application pages. CSS gives this area space beside the desktop sidebar. -->
+    <div class="workspace">
+      <!-- The header shows the current page name and the account dropdown. -->
+      <header class="topbar">
+        <!-- The menu button opens mobile navigation. aria-expanded reports whether it is open; aria-controls identifies the controlled sidebar. strong displays the current page title. -->
+        <div class="row"><button id="menu-button" class="icon-button mobile-only" aria-label="Open navigation" aria-expanded="false" aria-controls="sidebar"></button><strong id="page-title">Dashboard</strong></div>
+        <!-- Wraps the profile button and dropdown so JavaScript can detect clicks outside this area. -->
+        <div class="profile-area">
+          <!-- Opens the profile dropdown. aria-hidden on the small arrow means screen readers ignore this decorative symbol. -->
+          <button id="profile-button" class="profile-button" aria-expanded="false" aria-controls="profile-menu"><span class="avatar user-initial"></span><span class="user-name"></span><span aria-hidden="true">⌄</span></button>
+          <!-- The dropdown starts hidden. JavaScript toggles hidden and aria-expanded when the profile button is clicked. -->
+          <div id="profile-menu" class="profile-menu" hidden>
+            <!-- A placeholder for the current account name. strong gives the displayed name emphasis. -->
+            <strong class="user-name"></strong>
+            <!-- Opens the editable My Profile dialog through the profile action handler. -->
+            <button data-action="profile">My Profile</button>
+            <!-- Opens the Change Password dialog through the password action handler. -->
+            <button data-action="password">Change Password</button>
+            <!-- Opens the same logout confirmation used by the sidebar button. -->
+            <button data-action="logout">Logout</button>
+          </div>
+        </div>
+      </header>
+      <!-- Main application content. tabindex="-1" allows script or anchor navigation to focus this region without adding it to the normal Tab sequence. -->
+      <main id="main" tabindex="-1">
+        <!-- Dashboard placeholder. renderDashboard() inserts cards and the daily schedule. CSS displays a page only when it has the active class. -->
+        <section id="dashboardPage" class="page" aria-label="Dashboard"></section>
+        <!-- Patient list/profile placeholder. renderPatients() or viewPatient() supplies its content. -->
+        <section id="patientsPage" class="page" aria-label="Patients"></section>
+        <!-- Appointment placeholder. renderAppointments() builds the filters and booking table. -->
+        <section id="appointmentsPage" class="page" aria-label="Appointments"></section>
+        <!-- Doctor directory placeholder. renderDoctors() supplies its controls and table. -->
+        <section id="doctorsPage" class="page" aria-label="Doctors"></section>
+        <!-- Report placeholder. renderReports() and generateReport() build content that can also be printed. -->
+        <section id="reportsPage" class="page" aria-label="Reports"></section>
+      </main>
+    </div>
+  </div>
+  <!-- Reusable native dialog for editors and details. aria-labelledby links its accessible name to the heading. showModal() opens it and makes background content inactive. -->
+  <dialog id="modal" aria-labelledby="modal-title">
+    <!-- Contains the title changed by openModal() and the close button. data-action="close" checks for unsaved changes before closing. -->
+    <div class="modal-heading"><h2 id="modal-title"></h2><button class="icon-button" data-action="close" aria-label="Close dialog">×</button></div>
+    <!-- JavaScript inserts the selected form or record details here. This area can scroll when a dialog is tall. -->
+    <div id="modal-content"></div>
+  </dialog>
+  <!-- Separate confirmation dialog for archive/remove/logout and discarding edits. It can open above an existing editor. -->
+  <dialog id="confirm-modal" aria-labelledby="confirm-title">
+    <!-- Confirmation title and explanation; confirmAction() sets both with textContent. -->
+    <h2 id="confirm-title"></h2><p id="confirm-text"></p>
+    <!-- Cancel closes the confirmation. Confirm runs the callback registered by confirmAction(); it does not automatically submit another form. -->
+    <div class="form-actions"><button id="confirm-no" class="button secondary">Cancel</button><button id="confirm-yes" class="button danger">Confirm</button></div>
+  </dialog>
+  <!-- Temporary notifications appear here. aria-live="polite" announces new messages without interrupting the screen reader immediately. -->
+  <div id="toasts" class="toasts" aria-live="polite"></div>
+  <!-- Fallback text shown when JavaScript is disabled. This application needs JavaScript to create its forms and tables. -->
+  <noscript>Please enable JavaScript to use MetroMed Clinic.</noscript>
+<!-- The document ends after its content and notifications. No footer element is included. -->
+</body>
+</html>
