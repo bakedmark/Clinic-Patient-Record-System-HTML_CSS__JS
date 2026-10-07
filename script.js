@@ -1,6 +1,5 @@
 'use strict';
 
-
 /*
   BEGINNER SYNTAX GUIDE
   const declares a binding that cannot be reassigned; its array/object contents can change.
