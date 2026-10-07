@@ -1,2115 +1,1537 @@
-/*
-  CSS STUDY NOTES
-  CSS controls presentation; JavaScript handles clicks and saved data.
-  Each rule has a selector followed by declarations inside curly braces.
-  A declaration is property: value; and ends with a semicolon.
-  .name matches a class; #name matches an ID; a plain name matches an HTML tag.
-  A space between selectors means descendant; > means direct child.
-  .button.secondary means the same element has both classes.
-  :hover, :focus and :disabled are states (pseudo-classes).
-  ::before and ::backdrop style generated parts (pseudo-elements).
-  --name defines a custom property; var(--name) reads it.
-  px means CSS pixels; % is relative; fr is a grid share; vh/vw refer to the viewport.
-  dvh uses the changing visible viewport height on mobile. calc() calculates a size.
-  Hex colors use #RRGGBB; eight digits add alpha transparency (#RRGGBBAA).
-  More specific selectors normally win. For equal priority, later declarations win.
-  !important increases a declaration's priority; it is used sparingly for hiding/printing.
-  @media applies rules only when its condition is true; @page controls printed pages.
-  Slash-star comments are ignored by the browser. CSS does not use // comments.
-*/
-
-
-/* GLOBAL THEME: matches the document root. Custom properties are reusable colors shared across the app. */
 :root {
-  /* Reusable theme color: --primary. Read it with var(--primary). */
   --primary: #2563eb;
   --deep: #1e3a8a;
   --pale: #eff6ff;
   --focus: #3b82f6;
   --success: #15803d;
   --success-bg: #dcfce7;
-  /* Reusable theme color: --dark. Read it with var(--dark). */
   --dark: #1d4ed8;
-  /* Reusable theme color: --light. Read it with var(--light). */
   --light: #dbeafe;
-  /* Reusable theme color: --paper. Read it with var(--paper). */
   --paper: #f5f9ff;
-  /* Reusable theme color: --white. Read it with var(--white). */
   --white: #fff;
-  /* Reusable theme color: --ink. Read it with var(--ink). */
   --ink: #172033;
-  /* Reusable theme color: --muted. Read it with var(--muted). */
   --muted: #64748b;
-  /* Reusable theme color: --line. Read it with var(--line). */
   --line: #d9e2f0;
-  /* Reusable theme color: --danger. Read it with var(--danger). */
   --danger: #b91c1c;
-  /* Reusable theme color: --danger-bg. Read it with var(--danger-bg). */
   --danger-bg: #fee2e2;
-  /* Reusable theme color: --warning. Read it with var(--warning). */
   --warning: #b45309;
-  /* Reusable theme color: --warning-bg. Read it with var(--warning-bg). */
   --warning-bg: #fff3d6;
-  /* Font choices in priority order. The browser uses the first available font. */
   font-family: system-ui, "Segoe UI", Roboto, Arial, sans-serif;
-  /* Text color; SVG strokes using currentColor also use this value. */
   color: var(--ink);
-  /* Background color or fill. transparent allows the background behind it to show. */
   background: var(--paper);
 }
 
-/* Universal selector: matches every element. */
 * {
-  /* border-box includes padding and borders in the declared width/height. */
   box-sizing: border-box;
 }
-  
-/* Base page styles; removing the default body margin lets the layout reach the window edges. */
+
 body {
-  /* Space outside the element. Values follow top/right/bottom/left; two values mean vertical/horizontal. auto can use available space. */
   margin: 0;
-  /* Text size. px means CSS pixels; print styles use pt (points). */
   font-size: 14px;
-  /* Height of each text line; a unitless value multiplies the font size. */
   line-height: 1.5;
 }
 
-/* Styles button, input, select, textarea. Class selectors start with a dot; descendant selectors contain a space. */
-button, input, select, textarea {
-  /* Shorthand combining font style, weight, size and family; inherit copies the parent font settings. */
+button,
+input,
+select,
+textarea {
   font: inherit;
 }
 
-/* Styles button. Class selectors start with a dot; descendant selectors contain a space. */
 button {
-  /* Pointer shape: pointer signals an action; not-allowed signals a disabled control. */
   cursor: pointer;
 }
 
-/* Disabled state: visually marks controls that cannot currently be used. */
 button:disabled {
-  /* Pointer shape: pointer signals an action; not-allowed signals a disabled control. */
   cursor: not-allowed;
-  /* Transparency from 0 (invisible) to 1 (opaque); affects the element and its children. */
-  opacity: .55;
+  opacity: 0.55;
 }
 
-/* Styles button, a. Class selectors start with a dot; descendant selectors contain a space. */
-button, a {
-  /* Controls the tap highlight in supporting mobile browsers. transparent suppresses that highlight. */
+button,
+a {
   -webkit-tap-highlight-color: transparent;
 }
 
-/* Styles a. Class selectors start with a dot; descendant selectors contain a space. */
 a {
-  /* Text color; SVG strokes using currentColor also use this value. */
   color: var(--dark);
-  /* none removes the default link underline. */
   text-decoration: none;
 }
 
-/* Styles h1, h2, h3, p. Class selectors start with a dot; descendant selectors contain a space. */
-h1, h2, h3, p {
-  /* Space outside the element. Values follow top/right/bottom/left; two values mean vertical/horizontal. auto can use available space. */
+h1,
+h2,
+h3,
+p {
   margin: 0;
 }
 
-/* Styles h1. Class selectors start with a dot; descendant selectors contain a space. */
 h1 {
-  /* Text size. px means CSS pixels; print styles use pt (points). */
   font-size: 28px;
-  /* Height of each text line; a unitless value multiplies the font size. */
   line-height: 1.25;
-  /* Extra spacing between letters. A negative value makes letters slightly closer. */
-  letter-spacing: -.7px;
+  letter-spacing: -0.7px;
 }
 
-/* Styles h2. Class selectors start with a dot; descendant selectors contain a space. */
 h2 {
-  /* Text size. px means CSS pixels; print styles use pt (points). */
   font-size: 18px;
 }
 
-/* Styles h3. Class selectors start with a dot; descendant selectors contain a space. */
 h3 {
-  /* Text size. px means CSS pixels; print styles use pt (points). */
   font-size: 15px;
 }
 
-/* Styles small, .muted. Class selectors start with a dot; descendant selectors contain a space. */
-small, .muted {
-  /* Text color; SVG strokes using currentColor also use this value. */
+small,
+.muted {
   color: var(--muted);
 }
 
-/* Attribute selector: hides any element carrying the HTML hidden attribute. */
 [hidden] {
-  /* Chooses the layout mode: flex/grid arrange children, block starts a block, none removes the element from layout. */
   display: none !important;
 }
 
-/* Shows a clear focus outline when the browser determines it is needed, usually during keyboard navigation. */
 :focus-visible {
-  /* Focus indicator drawn outside the border without changing layout size. */
   outline: 3px solid var(--primary);
-  /* Gap between the border and the outline. */
   outline-offset: 3px;
 }
 
-/* Keeps the keyboard skip link above the visible page until focused. */
 .skip-link {
-  /* fixed anchors to the viewport; relative anchors positioned children; absolute leaves normal flow; sticky stays at an edge while scrolling. */
   position: fixed;
-  /* Offset from the top edge of the positioning area. */
   top: -80px;
-  /* Offset from the left edge of the positioning area. */
   left: 12px;
-  /* Space inside the element. Two values mean vertical/horizontal; three mean top/horizontal/bottom. */
   padding: 12px;
-  /* Background color or fill. transparent allows the background behind it to show. */
   background: white;
-  /* Stacking level within a stacking context. Higher values generally place positioned elements above lower ones. */
   z-index: 100;
 }
 
-/* Moves the focused skip link into view so keyboard users can jump to main content. */
 .skip-link:focus {
-  /* Offset from the top edge of the positioning area. */
   top: 10px;
 }
 
-/* Styles .row. Class selectors start with a dot; descendant selectors contain a space. */
 .row {
-  /* Chooses the layout mode: flex/grid arrange children, block starts a block, none removes the element from layout. */
   display: flex;
-  /* Cross-axis alignment. In a normal flex row, center vertically aligns icons and text. */
   align-items: center;
-  /* Space between flex/grid items without adding outer margins. */
   gap: 12px;
 }
 
-/* Shared inline SVG icon dimensions and drawing style; a fixed flex basis keeps icons from crushing into text. */
 .icon {
-  /* Requested element width; percentages refer to the containing block. */
   width: 20px;
-  /* Requested height of the element. */
   height: 20px;
-  /* Shorthand for grow/shrink/basis. flex: 1 shares free space; 0 0 20px fixes the icon flex size. */
   flex: 0 0 20px;
-  /* Interior paint for SVG shapes. none keeps these icons as outlines. */
   fill: none;
-  /* SVG outline color. currentColor follows the element text color. */
   stroke: currentColor;
-  /* Thickness of the SVG outlines in SVG coordinate units. */
   stroke-width: 1.8;
-  /* round gives SVG line ends rounded tips. */
   stroke-linecap: round;
-  /* round softens corners where SVG lines meet. */
   stroke-linejoin: round;
 }
 
-/* Shared button layout. A comma applies the same declarations to either class. */
-.button, .icon-button {
-  /* Chooses the layout mode: flex/grid arrange children, block starts a block, none removes the element from layout. */
+.button,
+.icon-button {
   display: inline-flex;
-  /* Cross-axis alignment. In a normal flex row, center vertically aligns icons and text. */
   align-items: center;
-  /* Main-axis alignment. space-between separates the first and last items; center centers them. */
   justify-content: center;
-  /* Space between flex/grid items without adding outer margins. */
   gap: 8px;
-  /* Minimum allowed height; often used for comfortable button/input targets. */
   min-height: 44px;
-  /* Border shorthand: thickness, line style and color. 0 removes the border. */
   border: 1px solid transparent;
-  /* Rounds the corners. 50% makes equal-width/height elements circular. */
   border-radius: 8px;
-  /* Space inside the element. Two values mean vertical/horizontal; three mean top/horizontal/bottom. */
   padding: 10px 16px;
-  /* Text thickness; larger numeric values generally look bolder. */
   font-weight: 600;
-  /* Text color; SVG strokes using currentColor also use this value. */
   color: white;
-  /* Background color or fill. transparent allows the background behind it to show. */
   background: var(--primary);
-  /* Animates changes to the named property over the stated time; .18s is 180 milliseconds. */
-  transition: background .18s;
+  transition: background 0.18s;
 }
 
-/* Hover state: applies while the pointer is over the matching element. */
 .button:hover {
-  /* Background color or fill. transparent allows the background behind it to show. */
   background: var(--dark);
 }
 
-/* Matches an element with BOTH button and secondary classes; this is not a descendant selector. */
 .button.secondary {
-  /* Text color; SVG strokes using currentColor also use this value. */
   color: var(--dark);
-  /* Background color or fill. transparent allows the background behind it to show. */
   background: white;
-  /* Sets the existing border color without changing its width. */
   border-color: var(--primary);
 }
 
-/* Hover state: applies while the pointer is over the matching element. */
-.button.secondary:hover, .icon-button:hover {
-  /* Background color or fill. transparent allows the background behind it to show. */
+.button.secondary:hover,
+.icon-button:hover {
   background: var(--light);
 }
 
-/* Styles .button.danger. Class selectors start with a dot; descendant selectors contain a space. */
 .button.danger {
-  /* Background color or fill. transparent allows the background behind it to show. */
   background: var(--danger);
 }
 
-/* Styles .icon-button. Class selectors start with a dot; descendant selectors contain a space. */
 .icon-button {
-  /* Minimum allowed width; helps keep inputs and controls usable. */
   min-width: 40px;
-  /* Space inside the element. Two values mean vertical/horizontal; three mean top/horizontal/bottom. */
   padding: 9px;
-  /* Text color; SVG strokes using currentColor also use this value. */
   color: var(--muted);
-  /* Background color or fill. transparent allows the background behind it to show. */
   background: transparent;
 }
 
-/* Styles .icon-button.destructive. Class selectors start with a dot; descendant selectors contain a space. */
 .icon-button.destructive {
-  /* Text color; SVG strokes using currentColor also use this value. */
   color: var(--danger);
 }
 
-/* Styles .logo. Class selectors start with a dot; descendant selectors contain a space. */
 .logo {
-  /* Chooses the layout mode: flex/grid arrange children, block starts a block, none removes the element from layout. */
   display: inline-grid;
-  /* Shorthand for align-items and justify-items. center centers content in a grid cell. */
   place-items: center;
-  /* Whether the item may shrink in a flex row. 0 preserves the avatar/icon size. */
   flex-shrink: 0;
-  /* Requested element width; percentages refer to the containing block. */
   width: 56px;
-  /* Requested height of the element. */
   height: 56px;
-  /* Rounds the corners. 50% makes equal-width/height elements circular. */
   border-radius: 50%;
-  /* Background color or fill. transparent allows the background behind it to show. */
   background: var(--primary);
-  /* Text color; SVG strokes using currentColor also use this value. */
   color: white;
-  /* Shorthand combining font style, weight, size and family; inherit copies the parent font settings. */
-  font: bold italic 42px Georgia, serif;
+  font:
+    bold italic 42px Georgia,
+    serif;
 }
 
-/* Styles .brand. Class selectors start with a dot; descendant selectors contain a space. */
 .brand {
-  /* Chooses the layout mode: flex/grid arrange children, block starts a block, none removes the element from layout. */
   display: flex;
-  /* Cross-axis alignment. In a normal flex row, center vertically aligns icons and text. */
   align-items: center;
-  /* Space between flex/grid items without adding outer margins. */
   gap: 12px;
-  /* Text size. px means CSS pixels; print styles use pt (points). */
   font-size: 22px;
-  /* Text thickness; larger numeric values generally look bolder. */
   font-weight: 650;
-  /* Text color; SVG strokes using currentColor also use this value. */
   color: white;
-  /* Height of each text line; a unitless value multiplies the font size. */
   line-height: 1.2;
 }
 
-/* Styles .brand small. Class selectors start with a dot; descendant selectors contain a space. */
 .brand small {
-  /* Chooses the layout mode: flex/grid arrange children, block starts a block, none removes the element from layout. */
   display: block;
-  /* Space outside the top edge; auto can absorb free space in a flex layout. */
   margin-top: 5px;
-  /* Text color; SVG strokes using currentColor also use this value. */
   color: #dbeafe;
-  /* Text size. px means CSS pixels; print styles use pt (points). */
   font-size: 10px;
-  /* Extra spacing between letters. A negative value makes letters slightly closer. */
   letter-spacing: 3px;
 }
 
-/* Desktop sidebar fixed to the left. A vertical flex layout allows account details to sit at the bottom. */
 .sidebar {
-  /* fixed anchors to the viewport; relative anchors positioned children; absolute leaves normal flow; sticky stays at an edge while scrolling. */
   position: fixed;
-  /* Shorthand for top/right/bottom/left offsets. One value applies to all four edges. */
   inset: 0 auto 0 0;
-  /* Requested element width; percentages refer to the containing block. */
   width: 236px;
-  /* Chooses the layout mode: flex/grid arrange children, block starts a block, none removes the element from layout. */
   display: flex;
-  /* column stacks flex children vertically instead of horizontally. */
   flex-direction: column;
-  /* Space inside the element. Two values mean vertical/horizontal; three mean top/horizontal/bottom. */
   padding: 30px 18px 22px;
-  /* Background color or fill. transparent allows the background behind it to show. */
   background: var(--deep);
-  /* Text color; SVG strokes using currentColor also use this value. */
   color: white;
-  /* Stacking level within a stacking context. Higher values generally place positioned elements above lower ones. */
   z-index: 30;
 }
 
-/* Styles .sidebar .logo. Class selectors start with a dot; descendant selectors contain a space. */
 .sidebar .logo {
-  /* Background color or fill. transparent allows the background behind it to show. */
   background: #ffffff16;
 }
 
-/* Styles .nav-label. Class selectors start with a dot; descendant selectors contain a space. */
 .nav-label {
-  /* Space outside the element. Values follow top/right/bottom/left; two values mean vertical/horizontal. auto can use available space. */
   margin: 40px 14px 14px;
-  /* Text color; SVG strokes using currentColor also use this value. */
   color: #bfdbfe;
-  /* Text size. px means CSS pixels; print styles use pt (points). */
   font-size: 10px;
-  /* Extra spacing between letters. A negative value makes letters slightly closer. */
   letter-spacing: 1.5px;
 }
 
-/* Styles .sidebar nav. Class selectors start with a dot; descendant selectors contain a space. */
 .sidebar nav {
-  /* Chooses the layout mode: flex/grid arrange children, block starts a block, none removes the element from layout. */
   display: grid;
-  /* Space between flex/grid items without adding outer margins. */
   gap: 7px;
 }
 
-/* Styles .nav-link. Class selectors start with a dot; descendant selectors contain a space. */
 .nav-link {
-  /* Chooses the layout mode: flex/grid arrange children, block starts a block, none removes the element from layout. */
   display: flex;
-  /* Cross-axis alignment. In a normal flex row, center vertically aligns icons and text. */
   align-items: center;
-  /* Space between flex/grid items without adding outer margins. */
   gap: 12px;
-  /* Space inside the element. Two values mean vertical/horizontal; three mean top/horizontal/bottom. */
   padding: 14px;
-  /* Rounds the corners. 50% makes equal-width/height elements circular. */
   border-radius: 9px;
-  /* Text color; SVG strokes using currentColor also use this value. */
   color: #eff6ff;
 }
 
-/* Hover state: applies while the pointer is over the matching element. */
 .nav-link:hover {
-  /* Background color or fill. transparent allows the background behind it to show. */
-  background: rgba(255,255,255,0.10);
+  background: rgba(255, 255, 255, 0.1);
 }
 
-/* Styles .nav-link.active. Class selectors start with a dot; descendant selectors contain a space. */
 .nav-link.active {
-  /* Background color or fill. transparent allows the background behind it to show. */
   background: var(--primary);
-  /* Text color; SVG strokes using currentColor also use this value. */
   color: white;
-  /* Text thickness; larger numeric values generally look bolder. */
   font-weight: 650;
-  /* Shadow values describe offsets, blur and color. inset draws inside the box (used for the active navigation accent). */
   box-shadow: inset 3px 0 #93c5fd;
 }
 
-/* Account section at the bottom of the sidebar. Auto top margin takes up remaining flex space. */
 .sidebar-account {
-  /* Space outside the top edge; auto can absorb free space in a flex layout. */
   margin-top: auto;
-  /* Inside spacing above the content. */
   padding-top: 22px;
-  /* Border along the top edge only. */
   border-top: 1px solid #ffffff30;
 }
 
-/* Styles .account-link. Class selectors start with a dot; descendant selectors contain a space. */
 .account-link {
-  /* Chooses the layout mode: flex/grid arrange children, block starts a block, none removes the element from layout. */
   display: flex;
-  /* Cross-axis alignment. In a normal flex row, center vertically aligns icons and text. */
   align-items: center;
-  /* Space between flex/grid items without adding outer margins. */
   gap: 12px;
-  /* Requested element width; percentages refer to the containing block. */
   width: 100%;
-  /* Space inside the element. Two values mean vertical/horizontal; three mean top/horizontal/bottom. */
   padding: 8px 0;
-  /* Aligns inline content such as text within the element. */
   text-align: left;
-  /* Border shorthand: thickness, line style and color. 0 removes the border. */
   border: 0;
-  /* Background color or fill. transparent allows the background behind it to show. */
   background: transparent;
-  /* Text color; SVG strokes using currentColor also use this value. */
   color: white;
 }
 
-/* Styles .account-link strong. Class selectors start with a dot; descendant selectors contain a space. */
 .account-link strong {
-  /* Chooses the layout mode: flex/grid arrange children, block starts a block, none removes the element from layout. */
   display: block;
-  /* anywhere lets very long names or words wrap instead of breaking the layout. */
   overflow-wrap: anywhere;
 }
 
-/* Styles .account-link small. Class selectors start with a dot; descendant selectors contain a space. */
 .account-link small {
-  /* Chooses the layout mode: flex/grid arrange children, block starts a block, none removes the element from layout. */
   display: block;
-  /* Text color; SVG strokes using currentColor also use this value. */
   color: #dbeafe;
-  /* Text size. px means CSS pixels; print styles use pt (points). */
   font-size: 11px;
 }
 
-/* Styles .avatar. Class selectors start with a dot; descendant selectors contain a space. */
 .avatar {
-  /* Chooses the layout mode: flex/grid arrange children, block starts a block, none removes the element from layout. */
   display: inline-grid;
-  /* Shorthand for align-items and justify-items. center centers content in a grid cell. */
   place-items: center;
-  /* Requested element width; percentages refer to the containing block. */
   width: 38px;
-  /* Requested height of the element. */
   height: 38px;
-  /* Rounds the corners. 50% makes equal-width/height elements circular. */
   border-radius: 50%;
-  /* Background color or fill. transparent allows the background behind it to show. */
   background: var(--light);
-  /* Text color; SVG strokes using currentColor also use this value. */
   color: var(--dark);
-  /* Text thickness; larger numeric values generally look bolder. */
   font-weight: 650;
-  /* Whether the item may shrink in a flex row. 0 preserves the avatar/icon size. */
   flex-shrink: 0;
 }
 
-/* Styles .logout-button. Class selectors start with a dot; descendant selectors contain a space. */
 .logout-button {
-  /* Chooses the layout mode: flex/grid arrange children, block starts a block, none removes the element from layout. */
   display: flex;
-  /* Main-axis alignment. space-between separates the first and last items; center centers them. */
   justify-content: center;
-  /* Cross-axis alignment. In a normal flex row, center vertically aligns icons and text. */
   align-items: center;
-  /* Space between flex/grid items without adding outer margins. */
   gap: 8px;
-  /* Requested element width; percentages refer to the containing block. */
   width: 100%;
-  /* Minimum allowed height; often used for comfortable button/input targets. */
   min-height: 42px;
-  /* Space outside the top edge; auto can absorb free space in a flex layout. */
   margin-top: 16px;
-  /* Border shorthand: thickness, line style and color. 0 removes the border. */
   border: 1px solid #ffffff45;
-  /* Rounds the corners. 50% makes equal-width/height elements circular. */
   border-radius: 8px;
-  /* Background color or fill. transparent allows the background behind it to show. */
   background: transparent;
-  /* Text color; SVG strokes using currentColor also use this value. */
   color: white;
 }
 
-/* Main application wrapper with enough left margin to avoid the fixed desktop sidebar. */
 .workspace {
-  /* Space outside the left edge; the desktop workspace uses it to clear the sidebar. */
   margin-left: 236px;
-  /* Minimum allowed height; often used for comfortable button/input targets. */
   min-height: 100vh;
 }
 
-/* Styles .topbar. Class selectors start with a dot; descendant selectors contain a space. */
 .topbar {
-  /* Requested height of the element. */
   height: 78px;
-  /* Space inside the element. Two values mean vertical/horizontal; three mean top/horizontal/bottom. */
   padding: 0 34px;
-  /* Chooses the layout mode: flex/grid arrange children, block starts a block, none removes the element from layout. */
   display: flex;
-  /* Main-axis alignment. space-between separates the first and last items; center centers them. */
   justify-content: space-between;
-  /* Cross-axis alignment. In a normal flex row, center vertically aligns icons and text. */
   align-items: center;
-  /* Space between flex/grid items without adding outer margins. */
   gap: 12px;
-  /* Background color or fill. transparent allows the background behind it to show. */
   background: white;
-  /* Border along the bottom edge only. */
   border-bottom: 1px solid var(--line);
 }
 
-/* Positioning anchor for the absolutely positioned profile dropdown. */
 .profile-area {
-  /* fixed anchors to the viewport; relative anchors positioned children; absolute leaves normal flow; sticky stays at an edge while scrolling. */
   position: relative;
 }
 
-/* Styles .profile-button. Class selectors start with a dot; descendant selectors contain a space. */
 .profile-button {
-  /* Chooses the layout mode: flex/grid arrange children, block starts a block, none removes the element from layout. */
   display: flex;
-  /* Cross-axis alignment. In a normal flex row, center vertically aligns icons and text. */
   align-items: center;
-  /* Space between flex/grid items without adding outer margins. */
   gap: 10px;
-  /* Border shorthand: thickness, line style and color. 0 removes the border. */
   border: 0;
-  /* Background color or fill. transparent allows the background behind it to show. */
   background: transparent;
-  /* Minimum allowed height; often used for comfortable button/input targets. */
   min-height: 44px;
-  /* Text color; SVG strokes using currentColor also use this value. */
   color: var(--ink);
 }
 
-/* Styles .profile-button .user-name. Class selectors start with a dot; descendant selectors contain a space. */
 .profile-button .user-name {
-  /* Maximum allowed width; prevents overly wide content. */
   max-width: 180px;
-  /* Controls content extending outside a box. hidden clips it; visible allows it to extend. */
   overflow: hidden;
-  /* ellipsis displays three dots for clipped text when overflow and white-space rules permit it. */
   text-overflow: ellipsis;
-  /* nowrap prevents line wrapping; normal allows it; pre-wrap preserves newlines while still wrapping. */
   white-space: nowrap;
 }
 
-/* Profile dropdown placed just below its parent button area. */
 .profile-menu {
-  /* fixed anchors to the viewport; relative anchors positioned children; absolute leaves normal flow; sticky stays at an edge while scrolling. */
   position: absolute;
-  /* Offset from the right edge of the positioning area. */
   right: 0;
-  /* Offset from the top edge of the positioning area. */
   top: calc(100% + 12px);
-  /* Requested element width; percentages refer to the containing block. */
   width: 230px;
-  /* Space inside the element. Two values mean vertical/horizontal; three mean top/horizontal/bottom. */
   padding: 10px;
-  /* Background color or fill. transparent allows the background behind it to show. */
   background: white;
-  /* Border shorthand: thickness, line style and color. 0 removes the border. */
   border: 1px solid var(--line);
-  /* Rounds the corners. 50% makes equal-width/height elements circular. */
   border-radius: 12px;
-  /* Shadow values describe offsets, blur and color. inset draws inside the box (used for the active navigation accent). */
   box-shadow: 0 8px 30px #17203320;
-  /* Stacking level within a stacking context. Higher values generally place positioned elements above lower ones. */
   z-index: 40;
 }
 
-/* Styles .profile-menu > strong. Class selectors start with a dot; descendant selectors contain a space. */
 .profile-menu > strong {
-  /* Chooses the layout mode: flex/grid arrange children, block starts a block, none removes the element from layout. */
   display: block;
-  /* Space inside the element. Two values mean vertical/horizontal; three mean top/horizontal/bottom. */
   padding: 10px;
-  /* anywhere lets very long names or words wrap instead of breaking the layout. */
   overflow-wrap: anywhere;
 }
 
-/* Styles .profile-menu button. Class selectors start with a dot; descendant selectors contain a space. */
 .profile-menu button {
-  /* Chooses the layout mode: flex/grid arrange children, block starts a block, none removes the element from layout. */
   display: flex;
-  /* Cross-axis alignment. In a normal flex row, center vertically aligns icons and text. */
   align-items: center;
-  /* Space between flex/grid items without adding outer margins. */
   gap: 12px;
-  /* Requested element width; percentages refer to the containing block. */
   width: 100%;
-  /* Space inside the element. Two values mean vertical/horizontal; three mean top/horizontal/bottom. */
   padding: 12px 10px;
-  /* Border shorthand: thickness, line style and color. 0 removes the border. */
   border: 0;
-  /* Rounds the corners. 50% makes equal-width/height elements circular. */
   border-radius: 7px;
-  /* Background color or fill. transparent allows the background behind it to show. */
   background: transparent;
-  /* Text color; SVG strokes using currentColor also use this value. */
   color: var(--ink);
-  /* Aligns inline content such as text within the element. */
   text-align: left;
 }
 
-/* Hover state: applies while the pointer is over the matching element. */
 .profile-menu button:hover {
-  /* Background color or fill. transparent allows the background behind it to show. */
   background: var(--light);
 }
 
-/* ID selector: styles the single element with id="main". */
 #main {
-  /* Space inside the element. Two values mean vertical/horizontal; three mean top/horizontal/bottom. */
   padding: 32px 34px;
-  /* Maximum allowed width; prevents overly wide content. */
   max-width: 1600px;
-  /* Space outside the element. Values follow top/right/bottom/left; two values mean vertical/horizontal. auto can use available space. */
   margin: auto;
 }
 
-/* All application pages start hidden; JavaScript adds the active class to the selected page. */
 .page {
-  /* Chooses the layout mode: flex/grid arrange children, block starts a block, none removes the element from layout. */
   display: none;
 }
 
-/* Only a page with BOTH page and active classes is displayed. */
 .page.active {
-  /* Chooses the layout mode: flex/grid arrange children, block starts a block, none removes the element from layout. */
   display: block;
 }
 
-/* Styles .page-heading. Class selectors start with a dot; descendant selectors contain a space. */
 .page-heading {
-  /* Chooses the layout mode: flex/grid arrange children, block starts a block, none removes the element from layout. */
   display: flex;
-  /* Cross-axis alignment. In a normal flex row, center vertically aligns icons and text. */
   align-items: center;
-  /* Main-axis alignment. space-between separates the first and last items; center centers them. */
   justify-content: space-between;
-  /* Space between flex/grid items without adding outer margins. */
   gap: 18px;
-  /* Space outside the bottom edge. */
   margin-bottom: 26px;
 }
 
-/* Styles .page-heading p. Class selectors start with a dot; descendant selectors contain a space. */
 .page-heading p {
-  /* Space outside the top edge; auto can absorb free space in a flex layout. */
   margin-top: 8px;
-  /* Text color; SVG strokes using currentColor also use this value. */
   color: var(--muted);
 }
 
-/* Dashboard/report cards in four equal desktop columns. */
 .stats {
-  /* Chooses the layout mode: flex/grid arrange children, block starts a block, none removes the element from layout. */
   display: grid;
-  /* Defines grid columns. fr shares available space; repeat avoids repetition; minmax(0, 1fr) lets columns shrink. */
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  /* Space between flex/grid items without adding outer margins. */
   gap: 16px;
-  /* Space outside the bottom edge. */
   margin-bottom: 24px;
 }
 
-/* Styles .stat. Class selectors start with a dot; descendant selectors contain a space. */
 .stat {
-  /* Border shorthand: thickness, line style and color. 0 removes the border. */
   border: 1px solid var(--line);
-  /* Background color or fill. transparent allows the background behind it to show. */
   background: white;
-  /* Rounds the corners. 50% makes equal-width/height elements circular. */
   border-radius: 12px;
-  /* Space inside the element. Two values mean vertical/horizontal; three mean top/horizontal/bottom. */
   padding: 20px;
 }
 
-/* Styles .stat-top. Class selectors start with a dot; descendant selectors contain a space. */
 .stat-top {
-  /* Chooses the layout mode: flex/grid arrange children, block starts a block, none removes the element from layout. */
   display: flex;
-  /* Cross-axis alignment. In a normal flex row, center vertically aligns icons and text. */
   align-items: center;
-  /* Main-axis alignment. space-between separates the first and last items; center centers them. */
   justify-content: space-between;
-  /* Space between flex/grid items without adding outer margins. */
   gap: 8px;
-  /* Text color; SVG strokes using currentColor also use this value. */
   color: var(--muted);
-  /* Text size. px means CSS pixels; print styles use pt (points). */
   font-size: 12px;
 }
 
-/* Styles .stat-icon. Class selectors start with a dot; descendant selectors contain a space. */
 .stat-icon {
-  /* Chooses the layout mode: flex/grid arrange children, block starts a block, none removes the element from layout. */
   display: grid;
-  /* Shorthand for align-items and justify-items. center centers content in a grid cell. */
   place-items: center;
-  /* Requested element width; percentages refer to the containing block. */
   width: 36px;
-  /* Requested height of the element. */
   height: 36px;
-  /* Rounds the corners. 50% makes equal-width/height elements circular. */
   border-radius: 10px;
-  /* Background color or fill. transparent allows the background behind it to show. */
   background: var(--light);
-  /* Text color; SVG strokes using currentColor also use this value. */
   color: var(--dark);
-  /* Whether the item may shrink in a flex row. 0 preserves the avatar/icon size. */
   flex-shrink: 0;
 }
 
-/* Styles .stat strong. Class selectors start with a dot; descendant selectors contain a space. */
 .stat strong {
-  /* Chooses the layout mode: flex/grid arrange children, block starts a block, none removes the element from layout. */
   display: block;
-  /* Text size. px means CSS pixels; print styles use pt (points). */
   font-size: 32px;
-  /* Space outside the top edge; auto can absorb free space in a flex layout. */
   margin-top: 10px;
-  /* Height of each text line; a unitless value multiplies the font size. */
   line-height: 1.2;
 }
 
-/* Styles .stat small. Class selectors start with a dot; descendant selectors contain a space. */
 .stat small {
-  /* Chooses the layout mode: flex/grid arrange children, block starts a block, none removes the element from layout. */
   display: block;
-  /* Text size. px means CSS pixels; print styles use pt (points). */
   font-size: 11px;
-  /* Space outside the top edge; auto can absorb free space in a flex layout. */
   margin-top: 8px;
 }
 
-/* Styles .panel. Class selectors start with a dot; descendant selectors contain a space. */
 .panel {
-  /* Background color or fill. transparent allows the background behind it to show. */
   background: white;
-  /* Border shorthand: thickness, line style and color. 0 removes the border. */
   border: 1px solid var(--line);
-  /* Rounds the corners. 50% makes equal-width/height elements circular. */
   border-radius: 12px;
-  /* Controls content extending outside a box. hidden clips it; visible allows it to extend. */
   overflow: hidden;
-  /* Space outside the bottom edge. */
   margin-bottom: 24px;
 }
 
-/* Styles .panel-heading. Class selectors start with a dot; descendant selectors contain a space. */
 .panel-heading {
-  /* Chooses the layout mode: flex/grid arrange children, block starts a block, none removes the element from layout. */
   display: flex;
-  /* Cross-axis alignment. In a normal flex row, center vertically aligns icons and text. */
   align-items: center;
-  /* Main-axis alignment. space-between separates the first and last items; center centers them. */
   justify-content: space-between;
-  /* Space between flex/grid items without adding outer margins. */
   gap: 15px;
-  /* Space inside the element. Two values mean vertical/horizontal; three mean top/horizontal/bottom. */
   padding: 20px 24px;
 }
 
-/* Styles .panel-heading p. Class selectors start with a dot; descendant selectors contain a space. */
 .panel-heading p {
-  /* Space outside the top edge; auto can absorb free space in a flex layout. */
   margin-top: 4px;
-  /* Text size. px means CSS pixels; print styles use pt (points). */
   font-size: 12px;
-  /* Text color; SVG strokes using currentColor also use this value. */
   color: var(--muted);
 }
 
-/* Styles .panel-body. Class selectors start with a dot; descendant selectors contain a space. */
 .panel-body {
-  /* Space inside the element. Two values mean vertical/horizontal; three mean top/horizontal/bottom. */
   padding: 0 24px 24px;
 }
 
-/* Search/filter controls align at the bottom and may wrap to a new row. */
 .toolbar {
-  /* Chooses the layout mode: flex/grid arrange children, block starts a block, none removes the element from layout. */
   display: flex;
-  /* Cross-axis alignment. In a normal flex row, center vertically aligns icons and text. */
   align-items: flex-end;
-  /* wrap lets flex items move to another line when space is limited. */
   flex-wrap: wrap;
-  /* Space between flex/grid items without adding outer margins. */
   gap: 14px;
-  /* Space inside the element. Two values mean vertical/horizontal; three mean top/horizontal/bottom. */
   padding: 20px 24px;
 }
 
-/* Styles .toolbar > label. Class selectors start with a dot; descendant selectors contain a space. */
 .toolbar > label {
-  /* Shorthand for grow/shrink/basis. flex: 1 shares free space; 0 0 20px fixes the icon flex size. */
   flex: 1;
-  /* Minimum allowed width; helps keep inputs and controls usable. */
   min-width: 140px;
 }
 
-/* Styles .toolbar > .search. Class selectors start with a dot; descendant selectors contain a space. */
 .toolbar > .search {
-  /* Shorthand for grow/shrink/basis. flex: 1 shares free space; 0 0 20px fixes the icon flex size. */
   flex: 2;
-  /* Minimum allowed width; helps keep inputs and controls usable. */
   min-width: 240px;
 }
 
-/* Styles label. Class selectors start with a dot; descendant selectors contain a space. */
 label {
-  /* Chooses the layout mode: flex/grid arrange children, block starts a block, none removes the element from layout. */
   display: block;
 }
 
-/* Styles .field-label. Class selectors start with a dot; descendant selectors contain a space. */
 .field-label {
-  /* Chooses the layout mode: flex/grid arrange children, block starts a block, none removes the element from layout. */
   display: block;
-  /* Text size. px means CSS pixels; print styles use pt (points). */
   font-size: 12px;
-  /* Text thickness; larger numeric values generally look bolder. */
   font-weight: 600;
-  /* Space outside the bottom edge. */
   margin-bottom: 7px;
 }
 
-/* Styles input, select, textarea. Class selectors start with a dot; descendant selectors contain a space. */
-input, select, textarea {
-  /* Requested element width; percentages refer to the containing block. */
+input,
+select,
+textarea {
   width: 100%;
-  /* Minimum allowed height; often used for comfortable button/input targets. */
   min-height: 46px;
-  /* Space inside the element. Two values mean vertical/horizontal; three mean top/horizontal/bottom. */
   padding: 11px 12px;
-  /* Border shorthand: thickness, line style and color. 0 removes the border. */
   border: 1px solid var(--line);
-  /* Rounds the corners. 50% makes equal-width/height elements circular. */
   border-radius: 8px;
-  /* Background color or fill. transparent allows the background behind it to show. */
   background: white;
-  /* Text color; SVG strokes using currentColor also use this value. */
   color: var(--ink);
 }
 
-/* Styles input:focus, select:focus, textarea:focus. Class selectors start with a dot; descendant selectors contain a space. */
-input:focus, select:focus, textarea:focus {
-  /* Focus indicator drawn outside the border without changing layout size. */
+input:focus,
+select:focus,
+textarea:focus {
   outline: 2px solid var(--light);
-  /* Sets the existing border color without changing its width. */
   border-color: var(--focus);
 }
 
-/* Styles input[readonly]. Class selectors start with a dot; descendant selectors contain a space. */
 input[readonly] {
-  /* Background color or fill. transparent allows the background behind it to show. */
   background: var(--paper);
 }
 
-/* Styles input[type=checkbox]. Class selectors start with a dot; descendant selectors contain a space. */
-input[type=checkbox] {
-  /* Requested element width; percentages refer to the containing block. */
+input[type="checkbox"] {
   width: 18px;
-  /* Requested height of the element. */
   height: 18px;
-  /* Minimum allowed height; often used for comfortable button/input targets. */
   min-height: 0;
-  /* Sets the browser-drawn checkbox accent color. */
   accent-color: var(--primary);
-  /* Whether the item may shrink in a flex row. 0 preserves the avatar/icon size. */
   flex-shrink: 0;
 }
 
-/* Styles textarea. Class selectors start with a dot; descendant selectors contain a space. */
 textarea {
-  /* Minimum allowed height; often used for comfortable button/input targets. */
   min-height: 85px;
-  /* vertical lets the user resize textareas only upward/downward. */
   resize: vertical;
 }
 
-/* Positioning wrappers for icons/buttons placed inside input controls. */
-.search-box, .password-box {
-  /* fixed anchors to the viewport; relative anchors positioned children; absolute leaves normal flow; sticky stays at an edge while scrolling. */
+.search-box,
+.password-box {
   position: relative;
-  /* Chooses the layout mode: flex/grid arrange children, block starts a block, none removes the element from layout. */
   display: block;
 }
 
-/* The > selector matches only direct icon children of the search wrapper. */
 .search-box > .icon {
-  /* fixed anchors to the viewport; relative anchors positioned children; absolute leaves normal flow; sticky stays at an edge while scrolling. */
   position: absolute;
-  /* Offset from the top edge of the positioning area. */
   top: 13px;
-  /* Offset from the left edge of the positioning area. */
   left: 12px;
-  /* Text color; SVG strokes using currentColor also use this value. */
   color: var(--muted);
 }
 
-/* Styles .search-box input. Class selectors start with a dot; descendant selectors contain a space. */
 .search-box input {
-  /* Inside spacing on the left; used to reserve room for search icons. */
   padding-left: 42px;
 }
 
-/* Styles .password-box input. Class selectors start with a dot; descendant selectors contain a space. */
 .password-box input {
-  /* Inside spacing on the right; used to reserve room for password buttons. */
   padding-right: 48px;
 }
 
-/* Styles .password-box button. Class selectors start with a dot; descendant selectors contain a space. */
 .password-box button {
-  /* fixed anchors to the viewport; relative anchors positioned children; absolute leaves normal flow; sticky stays at an edge while scrolling. */
   position: absolute;
-  /* Offset from the right edge of the positioning area. */
   right: 3px;
-  /* Offset from the top edge of the positioning area. */
   top: 2px;
 }
 
-/* Styles .field-error. Class selectors start with a dot; descendant selectors contain a space. */
 .field-error {
-  /* Chooses the layout mode: flex/grid arrange children, block starts a block, none removes the element from layout. */
   display: block;
-  /* Text color; SVG strokes using currentColor also use this value. */
   color: var(--danger);
-  /* Text size. px means CSS pixels; print styles use pt (points). */
   font-size: 12px;
-  /* Space outside the top edge; auto can absorb free space in a flex layout. */
   margin-top: 5px;
 }
 
-/* Hides error containers with no content so they do not reserve space. */
 .field-error:empty {
-  /* Chooses the layout mode: flex/grid arrange children, block starts a block, none removes the element from layout. */
   display: none;
 }
 
-/* Styles [aria-invalid=true]. Class selectors start with a dot; descendant selectors contain a space. */
-[aria-invalid=true] {
-  /* Sets the existing border color without changing its width. */
+[aria-invalid="true"] {
   border-color: var(--danger);
 }
 
-/* Styles the form error summary only when it contains a message. :not reverses the :empty condition. */
 .form-error:not(:empty) {
-  /* Space outside the top edge; auto can absorb free space in a flex layout. */
   margin-top: 16px;
-  /* Space inside the element. Two values mean vertical/horizontal; three mean top/horizontal/bottom. */
   padding: 12px;
-  /* Rounds the corners. 50% makes equal-width/height elements circular. */
   border-radius: 8px;
-  /* Background color or fill. transparent allows the background behind it to show. */
   background: var(--danger-bg);
-  /* Text color; SVG strokes using currentColor also use this value. */
   color: var(--danger);
-  /* Text size. px means CSS pixels; print styles use pt (points). */
   font-size: 12px;
 }
 
-/* Two-column editor layout on wider screens; media queries change it to one column. */
 .form-grid {
-  /* Chooses the layout mode: flex/grid arrange children, block starts a block, none removes the element from layout. */
   display: grid;
-  /* Defines grid columns. fr shares available space; repeat avoids repetition; minmax(0, 1fr) lets columns shrink. */
   grid-template-columns: 1fr 1fr;
-  /* Space between flex/grid items without adding outer margins. */
   gap: 18px;
 }
 
-/* These items span the full width of their parent grid. */
-.full, .form-section {
-  /* 1 / -1 spans from the first grid line to the last, filling the row. */
+.full,
+.form-section {
   grid-column: 1 / -1;
 }
 
-/* Styles .form-section. Class selectors start with a dot; descendant selectors contain a space. */
 .form-section {
-  /* Inside spacing below the content. */
   padding-bottom: 9px;
-  /* Border along the bottom edge only. */
   border-bottom: 1px solid var(--line);
-  /* Text color; SVG strokes using currentColor also use this value. */
   color: var(--dark);
-  /* Text size. px means CSS pixels; print styles use pt (points). */
   font-size: 13px;
 }
 
-/* Styles .form-note. Class selectors start with a dot; descendant selectors contain a space. */
 .form-note {
-  /* Space outside the bottom edge. */
   margin-bottom: 18px;
-  /* Text size. px means CSS pixels; print styles use pt (points). */
   font-size: 12px;
-  /* Text color; SVG strokes using currentColor also use this value. */
   color: var(--muted);
 }
 
-/* Styles .form-actions. Class selectors start with a dot; descendant selectors contain a space. */
 .form-actions {
-  /* Chooses the layout mode: flex/grid arrange children, block starts a block, none removes the element from layout. */
   display: flex;
-  /* Main-axis alignment. space-between separates the first and last items; center centers them. */
   justify-content: flex-end;
-  /* Space between flex/grid items without adding outer margins. */
   gap: 10px;
-  /* Space outside the top edge; auto can absorb free space in a flex layout. */
   margin-top: 24px;
-  /* Inside spacing above the content. */
   padding-top: 20px;
-  /* Border along the top edge only. */
   border-top: 1px solid var(--line);
 }
 
-/* Styles .check. Class selectors start with a dot; descendant selectors contain a space. */
 .check {
-  /* Chooses the layout mode: flex/grid arrange children, block starts a block, none removes the element from layout. */
   display: flex;
-  /* Cross-axis alignment. In a normal flex row, center vertically aligns icons and text. */
   align-items: center;
-  /* Space between flex/grid items without adding outer margins. */
   gap: 9px;
-  /* Text size. px means CSS pixels; print styles use pt (points). */
   font-size: 13px;
 }
 
-/* Doctor weekday checkbox group laid out in three columns on wide screens. */
 .days {
-  /* Chooses the layout mode: flex/grid arrange children, block starts a block, none removes the element from layout. */
   display: grid;
-  /* Defines grid columns. fr shares available space; repeat avoids repetition; minmax(0, 1fr) lets columns shrink. */
   grid-template-columns: repeat(3, 1fr);
-  /* Space between flex/grid items without adding outer margins. */
   gap: 12px;
-  /* Border shorthand: thickness, line style and color. 0 removes the border. */
   border: 1px solid var(--line);
-  /* Rounds the corners. 50% makes equal-width/height elements circular. */
   border-radius: 8px;
-  /* Space inside the element. Two values mean vertical/horizontal; three mean top/horizontal/bottom. */
   padding: 14px;
-  /* Space outside the element. Values follow top/right/bottom/left; two values mean vertical/horizontal. auto can use available space. */
   margin: 0;
 }
 
-/* Styles .days legend. Class selectors start with a dot; descendant selectors contain a space. */
 .days legend {
-  /* Space inside the element. Two values mean vertical/horizontal; three mean top/horizontal/bottom. */
   padding: 0 6px;
-  /* Text size. px means CSS pixels; print styles use pt (points). */
   font-size: 12px;
-  /* Text thickness; larger numeric values generally look bolder. */
   font-weight: 600;
 }
 
-/* Wide tables scroll inside this wrapper rather than stretching the entire page. */
 .table-wrap {
-  /* auto adds horizontal scrolling only when content is wider than its container. */
   overflow-x: auto;
 }
 
-/* Styles table. Class selectors start with a dot; descendant selectors contain a space. */
 table {
-  /* Requested element width; percentages refer to the containing block. */
   width: 100%;
-  /* collapse makes adjacent table cells share borders. */
   border-collapse: collapse;
-  /* Aligns inline content such as text within the element. */
   text-align: left;
-  /* nowrap prevents line wrapping; normal allows it; pre-wrap preserves newlines while still wrapping. */
   white-space: nowrap;
 }
 
-/* Styles th. Class selectors start with a dot; descendant selectors contain a space. */
 th {
-  /* Space inside the element. Two values mean vertical/horizontal; three mean top/horizontal/bottom. */
   padding: 13px 20px;
-  /* Background color or fill. transparent allows the background behind it to show. */
   background: var(--paper);
-  /* Borders on the block-start and block-end edges (top/bottom here). */
   border-block: 1px solid var(--line);
-  /* Text color; SVG strokes using currentColor also use this value. */
   color: var(--muted);
-  /* Text size. px means CSS pixels; print styles use pt (points). */
   font-size: 11px;
-  /* Text thickness; larger numeric values generally look bolder. */
   font-weight: 600;
 }
 
-/* Styles td. Class selectors start with a dot; descendant selectors contain a space. */
 td {
-  /* Space inside the element. Two values mean vertical/horizontal; three mean top/horizontal/bottom. */
   padding: 15px 20px;
-  /* Border along the bottom edge only. */
   border-bottom: 1px solid var(--line);
-  /* Text size. px means CSS pixels; print styles use pt (points). */
   font-size: 12px;
 }
 
-/* Selects the last child row to avoid an unnecessary final divider. */
 tr:last-child td {
-  /* Border along the bottom edge only. */
   border-bottom: 0;
 }
 
-/* Hover state: applies while the pointer is over the matching element. */
 tbody tr:hover {
-  /* Background color or fill. transparent allows the background behind it to show. */
   background: #f8faff;
 }
 
-/* Styles .actions. Class selectors start with a dot; descendant selectors contain a space. */
 .actions {
-  /* Chooses the layout mode: flex/grid arrange children, block starts a block, none removes the element from layout. */
   display: flex;
-  /* Cross-axis alignment. In a normal flex row, center vertically aligns icons and text. */
   align-items: center;
-  /* Space between flex/grid items without adding outer margins. */
   gap: 4px;
 }
 
-/* Styles .person. Class selectors start with a dot; descendant selectors contain a space. */
 .person {
-  /* Chooses the layout mode: flex/grid arrange children, block starts a block, none removes the element from layout. */
   display: flex;
-  /* Cross-axis alignment. In a normal flex row, center vertically aligns icons and text. */
   align-items: center;
-  /* Space between flex/grid items without adding outer margins. */
   gap: 10px;
 }
 
-/* Styles .person .avatar. Class selectors start with a dot; descendant selectors contain a space. */
 .person .avatar {
-  /* Requested element width; percentages refer to the containing block. */
   width: 34px;
-  /* Requested height of the element. */
   height: 34px;
-  /* Text size. px means CSS pixels; print styles use pt (points). */
   font-size: 11px;
 }
 
-/* Styles .person strong. Class selectors start with a dot; descendant selectors contain a space. */
 .person strong {
-  /* Text thickness; larger numeric values generally look bolder. */
   font-weight: 600;
 }
 
-/* Styles .person small. Class selectors start with a dot; descendant selectors contain a space. */
 .person small {
-  /* Chooses the layout mode: flex/grid arrange children, block starts a block, none removes the element from layout. */
   display: block;
-  /* Space outside the top edge; auto can absorb free space in a flex layout. */
   margin-top: 3px;
-  /* Text size. px means CSS pixels; print styles use pt (points). */
   font-size: 11px;
 }
 
-/* Styles .badge. Class selectors start with a dot; descendant selectors contain a space. */
 .badge {
-  /* Chooses the layout mode: flex/grid arrange children, block starts a block, none removes the element from layout. */
   display: inline-flex;
-  /* Cross-axis alignment. In a normal flex row, center vertically aligns icons and text. */
   align-items: center;
-  /* Space between flex/grid items without adding outer margins. */
   gap: 6px;
-  /* Rounds the corners. 50% makes equal-width/height elements circular. */
   border-radius: 20px;
-  /* Space inside the element. Two values mean vertical/horizontal; three mean top/horizontal/bottom. */
   padding: 5px 10px;
-  /* Background color or fill. transparent allows the background behind it to show. */
   background: var(--light);
-  /* Text color; SVG strokes using currentColor also use this value. */
   color: var(--dark);
-  /* Text size. px means CSS pixels; print styles use pt (points). */
   font-size: 11px;
-  /* Text thickness; larger numeric values generally look bolder. */
   font-weight: 600;
 }
 
-/* Pseudo-element: creates the small status dot without needing another HTML tag. */
 .badge::before {
-  /* Creates the pseudo-element content. An empty string still creates a box for the small badge dot. */
   content: "";
-  /* Requested element width; percentages refer to the containing block. */
   width: 5px;
-  /* Requested height of the element. */
   height: 5px;
-  /* Rounds the corners. 50% makes equal-width/height elements circular. */
   border-radius: 50%;
-  /* Background color or fill. transparent allows the background behind it to show. */
   background: currentColor;
 }
 
-/* Styles .badge.busy. Class selectors start with a dot; descendant selectors contain a space. */
 .badge.busy {
-  /* Background color or fill. transparent allows the background behind it to show. */
   background: var(--warning-bg);
-  /* Text color; SVG strokes using currentColor also use this value. */
   color: var(--warning);
 }
 
-/* Styles .badge.cancelled. Class selectors start with a dot; descendant selectors contain a space. */
 .badge.cancelled {
-  /* Background color or fill. transparent allows the background behind it to show. */
   background: var(--danger-bg);
-  /* Text color; SVG strokes using currentColor also use this value. */
   color: var(--danger);
 }
 
-/* Styles .badge.unavailable, .badge.archived. Class selectors start with a dot; descendant selectors contain a space. */
-.badge.unavailable, .badge.archived {
-  /* Background color or fill. transparent allows the background behind it to show. */
+.badge.unavailable,
+.badge.archived {
   background: #e9eef5;
-  /* Text color; SVG strokes using currentColor also use this value. */
   color: var(--muted);
 }
 
-/* Styles .empty. Class selectors start with a dot; descendant selectors contain a space. */
 .empty {
-  /* Space inside the element. Two values mean vertical/horizontal; three mean top/horizontal/bottom. */
   padding: 46px 20px;
-  /* Aligns inline content such as text within the element. */
   text-align: center;
-  /* Text color; SVG strokes using currentColor also use this value. */
   color: var(--muted);
-  /* nowrap prevents line wrapping; normal allows it; pre-wrap preserves newlines while still wrapping. */
   white-space: normal;
 }
 
-/* Styles .empty .icon. Class selectors start with a dot; descendant selectors contain a space. */
 .empty .icon {
-  /* Chooses the layout mode: flex/grid arrange children, block starts a block, none removes the element from layout. */
   display: block;
-  /* Space outside the element. Values follow top/right/bottom/left; two values mean vertical/horizontal. auto can use available space. */
   margin: 0 auto 12px;
-  /* Requested element width; percentages refer to the containing block. */
   width: 30px;
-  /* Requested height of the element. */
   height: 30px;
 }
 
-/* Styles .empty strong. Class selectors start with a dot; descendant selectors contain a space. */
 .empty strong {
-  /* Chooses the layout mode: flex/grid arrange children, block starts a block, none removes the element from layout. */
   display: block;
-  /* Text color; SVG strokes using currentColor also use this value. */
   color: var(--ink);
-  /* Space outside the bottom edge. */
   margin-bottom: 5px;
 }
 
-/* Styles .pagination. Class selectors start with a dot; descendant selectors contain a space. */
 .pagination {
-  /* Chooses the layout mode: flex/grid arrange children, block starts a block, none removes the element from layout. */
   display: flex;
-  /* Cross-axis alignment. In a normal flex row, center vertically aligns icons and text. */
   align-items: center;
-  /* Main-axis alignment. space-between separates the first and last items; center centers them. */
   justify-content: space-between;
-  /* wrap lets flex items move to another line when space is limited. */
   flex-wrap: wrap;
-  /* Space between flex/grid items without adding outer margins. */
   gap: 12px;
-  /* Space inside the element. Two values mean vertical/horizontal; three mean top/horizontal/bottom. */
   padding: 15px 24px;
-  /* Border along the top edge only. */
   border-top: 1px solid var(--line);
-  /* Text color; SVG strokes using currentColor also use this value. */
   color: var(--muted);
-  /* Text size. px means CSS pixels; print styles use pt (points). */
   font-size: 12px;
 }
 
-/* Styles .profile-summary. Class selectors start with a dot; descendant selectors contain a space. */
 .profile-summary {
-  /* Chooses the layout mode: flex/grid arrange children, block starts a block, none removes the element from layout. */
   display: flex;
-  /* Cross-axis alignment. In a normal flex row, center vertically aligns icons and text. */
   align-items: center;
-  /* Main-axis alignment. space-between separates the first and last items; center centers them. */
   justify-content: space-between;
-  /* Space between flex/grid items without adding outer margins. */
   gap: 18px;
-  /* Space inside the element. Two values mean vertical/horizontal; three mean top/horizontal/bottom. */
   padding: 24px;
 }
 
-/* Styles .details. Class selectors start with a dot; descendant selectors contain a space. */
 .details {
-  /* Chooses the layout mode: flex/grid arrange children, block starts a block, none removes the element from layout. */
   display: grid;
-  /* Defines grid columns. fr shares available space; repeat avoids repetition; minmax(0, 1fr) lets columns shrink. */
   grid-template-columns: repeat(3, 1fr);
-  /* Space between flex/grid items without adding outer margins. */
   gap: 22px;
-  /* Space inside the element. Two values mean vertical/horizontal; three mean top/horizontal/bottom. */
   padding: 24px;
-  /* Space outside the element. Values follow top/right/bottom/left; two values mean vertical/horizontal. auto can use available space. */
   margin: 0;
-  /* Border along the top edge only. */
   border-top: 1px solid var(--line);
 }
 
-/* Styles dt. Class selectors start with a dot; descendant selectors contain a space. */
 dt {
-  /* Text size. px means CSS pixels; print styles use pt (points). */
   font-size: 12px;
-  /* Text color; SVG strokes using currentColor also use this value. */
   color: var(--muted);
 }
 
-/* Styles dd. Class selectors start with a dot; descendant selectors contain a space. */
 dd {
-  /* Space outside the element. Values follow top/right/bottom/left; two values mean vertical/horizontal. auto can use available space. */
   margin: 5px 0 0;
-  /* anywhere lets very long names or words wrap instead of breaking the layout. */
   overflow-wrap: anywhere;
-  /* nowrap prevents line wrapping; normal allows it; pre-wrap preserves newlines while still wrapping. */
   white-space: pre-wrap;
 }
 
-/* Styles .detail-list. Class selectors start with a dot; descendant selectors contain a space. */
 .detail-list {
-  /* Chooses the layout mode: flex/grid arrange children, block starts a block, none removes the element from layout. */
   display: grid;
-  /* Space between flex/grid items without adding outer margins. */
   gap: 18px;
-  /* Space outside the element. Values follow top/right/bottom/left; two values mean vertical/horizontal. auto can use available space. */
   margin: 0;
 }
 
-/* Styles .schedule-row. Class selectors start with a dot; descendant selectors contain a space. */
 .schedule-row {
-  /* Chooses the layout mode: flex/grid arrange children, block starts a block, none removes the element from layout. */
   display: flex;
-  /* Main-axis alignment. space-between separates the first and last items; center centers them. */
   justify-content: space-between;
-  /* Space between flex/grid items without adding outer margins. */
   gap: 12px;
-  /* Space inside the element. Two values mean vertical/horizontal; three mean top/horizontal/bottom. */
   padding: 12px 0;
-  /* Border along the bottom edge only. */
   border-bottom: 1px solid var(--line);
 }
 
-/* Styles .schedule. Class selectors start with a dot; descendant selectors contain a space. */
 .schedule {
-  /* Space outside the top edge; auto can absorb free space in a flex layout. */
   margin-top: 18px;
 }
 
-/* Centers authentication content across at least the full viewport height. */
 .auth-shell {
-  /* Minimum allowed height; often used for comfortable button/input targets. */
   min-height: 100vh;
-  /* Chooses the layout mode: flex/grid arrange children, block starts a block, none removes the element from layout. */
   display: grid;
-  /* Shorthand for align-items and justify-items. center centers content in a grid cell. */
   place-items: center;
-  /* Space inside the element. Two values mean vertical/horizontal; three mean top/horizontal/bottom. */
   padding: 32px 20px;
-  /* Background color or fill. transparent allows the background behind it to show. */
   background: #e0ecff;
 }
 
-/* Styles .auth-card. Class selectors start with a dot; descendant selectors contain a space. */
 .auth-card {
-  /* Requested element width; percentages refer to the containing block. */
   width: 100%;
-  /* Maximum allowed width; prevents overly wide content. */
   max-width: 470px;
-  /* Space inside the element. Two values mean vertical/horizontal; three mean top/horizontal/bottom. */
   padding: 36px;
-  /* Border shorthand: thickness, line style and color. 0 removes the border. */
   border: 1px solid var(--line);
-  /* Rounds the corners. 50% makes equal-width/height elements circular. */
   border-radius: 16px;
-  /* Background color or fill. transparent allows the background behind it to show. */
   background: #fbfdff;
 }
 
-/* Styles .auth-brand. Class selectors start with a dot; descendant selectors contain a space. */
 .auth-brand {
-  /* Aligns inline content such as text within the element. */
   text-align: center;
-  /* Space outside the bottom edge. */
   margin-bottom: 26px;
 }
 
-/* Styles .auth-brand .logo. Class selectors start with a dot; descendant selectors contain a space. */
 .auth-brand .logo {
-  /* Requested element width; percentages refer to the containing block. */
   width: 74px;
-  /* Requested height of the element. */
   height: 74px;
-  /* Text size. px means CSS pixels; print styles use pt (points). */
   font-size: 56px;
-  /* Space outside the bottom edge. */
   margin-bottom: 17px;
 }
 
-/* Styles .auth-brand h1. Class selectors start with a dot; descendant selectors contain a space. */
 .auth-brand h1 {
-  /* Text size. px means CSS pixels; print styles use pt (points). */
   font-size: 23px;
 }
 
-/* Styles .auth-brand p. Class selectors start with a dot; descendant selectors contain a space. */
 .auth-brand p {
-  /* Text color; SVG strokes using currentColor also use this value. */
   color: var(--muted);
-  /* Text size. px means CSS pixels; print styles use pt (points). */
   font-size: 13px;
-  /* Space outside the top edge; auto can absorb free space in a flex layout. */
   margin-top: 9px;
 }
 
-/* Styles .auth-card form. Class selectors start with a dot; descendant selectors contain a space. */
 .auth-card form {
-  /* Chooses the layout mode: flex/grid arrange children, block starts a block, none removes the element from layout. */
   display: grid;
-  /* Space between flex/grid items without adding outer margins. */
   gap: 17px;
 }
 
-/* Styles .auth-links. Class selectors start with a dot; descendant selectors contain a space. */
 .auth-links {
-  /* Chooses the layout mode: flex/grid arrange children, block starts a block, none removes the element from layout. */
   display: flex;
-  /* Main-axis alignment. space-between separates the first and last items; center centers them. */
   justify-content: center;
-  /* wrap lets flex items move to another line when space is limited. */
   flex-wrap: wrap;
-  /* Space between flex/grid items without adding outer margins. */
   gap: 20px;
-  /* Inside spacing above the content. */
   padding-top: 22px;
-  /* Space outside the top edge; auto can absorb free space in a flex layout. */
   margin-top: 24px;
-  /* Border along the top edge only. */
   border-top: 1px solid var(--line);
-  /* Text size. px means CSS pixels; print styles use pt (points). */
   font-size: 12px;
-  /* Text thickness; larger numeric values generally look bolder. */
   font-weight: 600;
 }
 
-/* Reusable modal dimensions and border/shadow. The native dialog opens through JavaScript showModal(). */
 dialog {
-  /* Requested element width; percentages refer to the containing block. */
   width: 700px;
-  /* Maximum allowed width; prevents overly wide content. */
   max-width: calc(100vw - 24px);
-  /* Maximum allowed height; tall dialogs can scroll instead of extending off-screen. */
   max-height: 90dvh;
-  /* Border shorthand: thickness, line style and color. 0 removes the border. */
   border: 1px solid var(--line);
-  /* Rounds the corners. 50% makes equal-width/height elements circular. */
   border-radius: 14px;
-  /* Space inside the element. Two values mean vertical/horizontal; three mean top/horizontal/bottom. */
   padding: 0;
-  /* Text color; SVG strokes using currentColor also use this value. */
   color: var(--ink);
-  /* Shadow values describe offsets, blur and color. inset draws inside the box (used for the active navigation accent). */
   box-shadow: 0 20px 65px #17203330;
 }
 
-/* Styles the browser-created overlay behind an open modal dialog. */
 dialog::backdrop {
-  /* Background color or fill. transparent allows the background behind it to show. */
   background: #14284ca6;
 }
 
-/* Sticky dialog heading keeps its title and close button visible while the dialog scrolls. */
 .modal-heading {
-  /* fixed anchors to the viewport; relative anchors positioned children; absolute leaves normal flow; sticky stays at an edge while scrolling. */
   position: sticky;
-  /* Offset from the top edge of the positioning area. */
   top: 0;
-  /* Stacking level within a stacking context. Higher values generally place positioned elements above lower ones. */
   z-index: 1;
-  /* Chooses the layout mode: flex/grid arrange children, block starts a block, none removes the element from layout. */
   display: flex;
-  /* Main-axis alignment. space-between separates the first and last items; center centers them. */
   justify-content: space-between;
-  /* Cross-axis alignment. In a normal flex row, center vertically aligns icons and text. */
   align-items: center;
-  /* Space inside the element. Two values mean vertical/horizontal; three mean top/horizontal/bottom. */
   padding: 18px 24px;
-  /* Border along the bottom edge only. */
   border-bottom: 1px solid var(--line);
-  /* Background color or fill. transparent allows the background behind it to show. */
   background: white;
 }
 
-/* Styles #modal-content. Class selectors start with a dot; descendant selectors contain a space. */
 #modal-content {
-  /* Space inside the element. Two values mean vertical/horizontal; three mean top/horizontal/bottom. */
   padding: 24px;
 }
 
-/* Styles #confirm-modal. Class selectors start with a dot; descendant selectors contain a space. */
 #confirm-modal {
-  /* Requested element width; percentages refer to the containing block. */
   width: 440px;
-  /* Space inside the element. Two values mean vertical/horizontal; three mean top/horizontal/bottom. */
   padding: 26px;
 }
 
-/* Styles #confirm-text. Class selectors start with a dot; descendant selectors contain a space. */
 #confirm-text {
-  /* Space outside the top edge; auto can absorb free space in a flex layout. */
   margin-top: 12px;
-  /* Text color; SVG strokes using currentColor also use this value. */
   color: var(--muted);
 }
 
-/* Fixed notification stack in the top-right corner. */
 .toasts {
-  /* fixed anchors to the viewport; relative anchors positioned children; absolute leaves normal flow; sticky stays at an edge while scrolling. */
   position: fixed;
-  /* Offset from the top edge of the positioning area. */
   top: 18px;
-  /* Offset from the right edge of the positioning area. */
   right: 18px;
-  /* Stacking level within a stacking context. Higher values generally place positioned elements above lower ones. */
   z-index: 100;
-  /* Maximum allowed width; prevents overly wide content. */
   max-width: calc(100vw - 36px);
-  /* Chooses the layout mode: flex/grid arrange children, block starts a block, none removes the element from layout. */
   display: grid;
-  /* Space between flex/grid items without adding outer margins. */
   gap: 10px;
 }
 
-/* Styles .toast. Class selectors start with a dot; descendant selectors contain a space. */
 .toast {
-  /* Space inside the element. Two values mean vertical/horizontal; three mean top/horizontal/bottom. */
   padding: 14px 18px;
-  /* Background color or fill. transparent allows the background behind it to show. */
   background: white;
-  /* Border shorthand: thickness, line style and color. 0 removes the border. */
   border: 1px solid var(--line);
-  /* Border along the left edge only; toasts use this as a status accent. */
   border-left: 4px solid var(--primary);
-  /* Rounds the corners. 50% makes equal-width/height elements circular. */
   border-radius: 9px;
-  /* Shadow values describe offsets, blur and color. inset draws inside the box (used for the active navigation accent). */
   box-shadow: 0 6px 24px #17203325;
 }
 
-/* Styles .toast.error. Class selectors start with a dot; descendant selectors contain a space. */
 .toast.error {
-  /* Changes the left border color to indicate a toast status. */
   border-left-color: var(--danger);
 }
 
-/* Styles .toast.warning. Class selectors start with a dot; descendant selectors contain a space. */
 .toast.warning {
-  /* Changes the left border color to indicate a toast status. */
   border-left-color: var(--warning);
 }
 
-/* Styles .report-heading. Class selectors start with a dot; descendant selectors contain a space. */
 .report-heading {
-  /* Chooses the layout mode: flex/grid arrange children, block starts a block, none removes the element from layout. */
   display: flex;
-  /* Main-axis alignment. space-between separates the first and last items; center centers them. */
   justify-content: space-between;
-  /* Cross-axis alignment. In a normal flex row, center vertically aligns icons and text. */
   align-items: center;
-  /* Space between flex/grid items without adding outer margins. */
   gap: 18px;
-  /* Space inside the element. Two values mean vertical/horizontal; three mean top/horizontal/bottom. */
   padding: 24px;
-  /* Border along the bottom edge only. */
   border-bottom: 1px solid var(--line);
 }
 
-/* Styles .report-heading h2. Class selectors start with a dot; descendant selectors contain a space. */
 .report-heading h2 {
-  /* Text color; SVG strokes using currentColor also use this value. */
   color: var(--dark);
 }
 
-/* Styles .report-heading p. Class selectors start with a dot; descendant selectors contain a space. */
 .report-heading p {
-  /* Space outside the top edge; auto can absorb free space in a flex layout. */
   margin-top: 6px;
 }
 
-/* Styles .report-summary. Class selectors start with a dot; descendant selectors contain a space. */
 .report-summary {
-  /* Chooses the layout mode: flex/grid arrange children, block starts a block, none removes the element from layout. */
   display: grid;
-  /* Defines grid columns. fr shares available space; repeat avoids repetition; minmax(0, 1fr) lets columns shrink. */
   grid-template-columns: repeat(3, 1fr);
-  /* Space between flex/grid items without adding outer margins. */
   gap: 22px;
-  /* Space inside the element. Two values mean vertical/horizontal; three mean top/horizontal/bottom. */
   padding: 24px;
 }
 
-/* Styles .report-summary strong. Class selectors start with a dot; descendant selectors contain a space. */
 .report-summary strong {
-  /* Chooses the layout mode: flex/grid arrange children, block starts a block, none removes the element from layout. */
   display: block;
-  /* Text size. px means CSS pixels; print styles use pt (points). */
   font-size: 26px;
 }
 
-/* Styles .report-summary span. Class selectors start with a dot; descendant selectors contain a space. */
 .report-summary span {
-  /* Text color; SVG strokes using currentColor also use this value. */
   color: var(--muted);
-  /* Text size. px means CSS pixels; print styles use pt (points). */
   font-size: 12px;
 }
 
-/* Styles .status-summary. Class selectors start with a dot; descendant selectors contain a space. */
 .status-summary {
-  /* Chooses the layout mode: flex/grid arrange children, block starts a block, none removes the element from layout. */
   display: flex;
-  /* Space between flex/grid items without adding outer margins. */
   gap: 18px;
-  /* wrap lets flex items move to another line when space is limited. */
   flex-wrap: wrap;
-  /* Space inside the element. Two values mean vertical/horizontal; three mean top/horizontal/bottom. */
   padding: 0 24px 24px;
 }
 
-/* Hide mobile controls in the base desktop layout; a narrower media query reveals them. */
 .mobile-only {
-  /* Chooses the layout mode: flex/grid arrange children, block starts a block, none removes the element from layout. */
   display: none;
 }
 
-/* Dark full-screen mobile navigation overlay, below the sidebar in stacking order. */
 .shade {
-  /* fixed anchors to the viewport; relative anchors positioned children; absolute leaves normal flow; sticky stays at an edge while scrolling. */
   position: fixed;
-  /* Shorthand for top/right/bottom/left offsets. One value applies to all four edges. */
   inset: 0;
-  /* Border shorthand: thickness, line style and color. 0 removes the border. */
   border: 0;
-  /* Background color or fill. transparent allows the background behind it to show. */
   background: #14284c80;
-  /* Stacking level within a stacking context. Higher values generally place positioned elements above lower ones. */
   z-index: 25;
 }
 
-/* RESPONSIVE OVERRIDE: applies at this viewport width or narrower. Wider-screen base rules remain unless a property is overridden below. */
 @media (max-width: 1100px) {
-
-  /* Within this media condition: Dashboard/report cards in four equal desktop columns. */
   .stats {
-    /* Defines grid columns. fr shares available space; repeat avoids repetition; minmax(0, 1fr) lets columns shrink. */
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  /* Within this media condition: ID selector: styles the single element with id="main". */
   #main {
-    /* Space inside the element. Two values mean vertical/horizontal; three mean top/horizontal/bottom. */
     padding: 26px 24px;
   }
 
-  /* Within this media condition: Styles .topbar. Class selectors start with a dot; descendant selectors contain a space. */
   .topbar {
-    /* Inside spacing on both inline edges (left/right in this English interface). */
     padding-inline: 24px;
   }
 }
 
-/* RESPONSIVE OVERRIDE: applies at this viewport width or narrower. Wider-screen base rules remain unless a property is overridden below. */
 @media (max-width: 899px) {
-
-  /* Within this media condition: Desktop sidebar fixed to the left. A vertical flex layout allows account details to sit at the bottom. */
   .sidebar {
-    /* Moves the displayed element without changing normal layout. translateX(-100%) shifts it left by its own width. */
     transform: translateX(-100%);
-    /* Animates changes to the named property over the stated time; .18s is 180 milliseconds. */
-    transition: transform .18s;
+    transition: transform 0.18s;
   }
 
-  /* Within this media condition: Styles .sidebar.open. Class selectors start with a dot; descendant selectors contain a space. */
   .sidebar.open {
-    /* Moves the displayed element without changing normal layout. translateX(-100%) shifts it left by its own width. */
     transform: translateX(0);
   }
 
-  /* Within this media condition: Main application wrapper with enough left margin to avoid the fixed desktop sidebar. */
   .workspace {
-    /* Space outside the left edge; the desktop workspace uses it to clear the sidebar. */
     margin-left: 0;
   }
 
-  /* Within this media condition: Hide mobile controls in the base desktop layout; a narrower media query reveals them. */
   .mobile-only {
-    /* Chooses the layout mode: flex/grid arrange children, block starts a block, none removes the element from layout. */
     display: inline-flex;
   }
 
-  /* Within this media condition: Two-column editor layout on wider screens; media queries change it to one column. */
   .form-grid {
-    /* Defines grid columns. fr shares available space; repeat avoids repetition; minmax(0, 1fr) lets columns shrink. */
     grid-template-columns: 1fr;
   }
 }
 
-/* RESPONSIVE OVERRIDE: applies at this viewport width or narrower. Wider-screen base rules remain unless a property is overridden below. */
 @media (max-width: 599px) {
-
-  /* Within this media condition: ID selector: styles the single element with id="main". */
   #main {
-    /* Space inside the element. Two values mean vertical/horizontal; three mean top/horizontal/bottom. */
     padding: 24px 16px;
   }
 
-  /* Within this media condition: Styles .topbar. Class selectors start with a dot; descendant selectors contain a space. */
   .topbar {
-    /* Requested height of the element. */
     height: 66px;
-    /* Inside spacing on both inline edges (left/right in this English interface). */
     padding-inline: 16px;
   }
 
-  /* Within this media condition: Styles .profile-button .user-name. Class selectors start with a dot; descendant selectors contain a space. */
   .profile-button .user-name {
-    /* Maximum allowed width; prevents overly wide content. */
     max-width: 95px;
-    /* Text size. px means CSS pixels; print styles use pt (points). */
     font-size: 12px;
   }
 
-  /* Within this media condition: Styles h1. Class selectors start with a dot; descendant selectors contain a space. */
   h1 {
-    /* Text size. px means CSS pixels; print styles use pt (points). */
     font-size: 24px;
   }
 
-  /* Within this media condition: Styles .page-heading. Class selectors start with a dot; descendant selectors contain a space. */
   .page-heading {
-    /* wrap lets flex items move to another line when space is limited. */
     flex-wrap: wrap;
   }
 
-  /* Within this media condition: Dashboard/report cards in four equal desktop columns. */
   .stats {
-    /* Space between flex/grid items without adding outer margins. */
     gap: 10px;
   }
 
-  /* Within this media condition: Styles .stat. Class selectors start with a dot; descendant selectors contain a space. */
   .stat {
-    /* Space inside the element. Two values mean vertical/horizontal; three mean top/horizontal/bottom. */
     padding: 14px;
   }
 
-  /* Within this media condition: Styles .stat-top. Class selectors start with a dot; descendant selectors contain a space. */
   .stat-top {
-    /* Cross-axis alignment. In a normal flex row, center vertically aligns icons and text. */
     align-items: flex-start;
   }
 
-  /* Within this media condition: Styles .stat-top > span:first-child. Class selectors start with a dot; descendant selectors contain a space. */
   .stat-top > span:first-child {
-    /* Text size. px means CSS pixels; print styles use pt (points). */
     font-size: 11px;
   }
 
-  /* Within this media condition: Styles .stat-icon. Class selectors start with a dot; descendant selectors contain a space. */
   .stat-icon {
-    /* Requested element width; percentages refer to the containing block. */
     width: 28px;
-    /* Requested height of the element. */
     height: 28px;
   }
 
-  /* Within this media condition: Styles .stat-icon .icon. Class selectors start with a dot; descendant selectors contain a space. */
   .stat-icon .icon {
-    /* Requested element width; percentages refer to the containing block. */
     width: 17px;
-    /* Requested height of the element. */
     height: 17px;
   }
 
-  /* Within this media condition: Styles .panel-heading, .toolbar. Class selectors start with a dot; descendant selectors contain a space. */
-  .panel-heading, .toolbar {
-    /* Space inside the element. Two values mean vertical/horizontal; three mean top/horizontal/bottom. */
+  .panel-heading,
+  .toolbar {
     padding: 18px;
   }
 
-  /* Within this media condition: Styles .toolbar > .search. Class selectors start with a dot; descendant selectors contain a space. */
   .toolbar > .search {
-    /* Minimum allowed width; helps keep inputs and controls usable. */
     min-width: 100%;
   }
 
-  /* Within this media condition: Styles .toolbar > label. Class selectors start with a dot; descendant selectors contain a space. */
   .toolbar > label {
-    /* Minimum allowed width; helps keep inputs and controls usable. */
     min-width: 120px;
   }
 
-  /* Within this media condition: Styles .panel-heading. Class selectors start with a dot; descendant selectors contain a space. */
   .panel-heading {
-    /* wrap lets flex items move to another line when space is limited. */
     flex-wrap: wrap;
   }
 
-  /* Within this media condition: Styles .profile-summary. Class selectors start with a dot; descendant selectors contain a space. */
   .profile-summary {
-    /* wrap lets flex items move to another line when space is limited. */
     flex-wrap: wrap;
-    /* Space inside the element. Two values mean vertical/horizontal; three mean top/horizontal/bottom. */
     padding: 20px;
   }
 
-  /* Within this media condition: Styles .details, .report-summary. Class selectors start with a dot; descendant selectors contain a space. */
-  .details, .report-summary {
-    /* Defines grid columns. fr shares available space; repeat avoids repetition; minmax(0, 1fr) lets columns shrink. */
+  .details,
+  .report-summary {
     grid-template-columns: 1fr 1fr;
-    /* Space inside the element. Two values mean vertical/horizontal; three mean top/horizontal/bottom. */
     padding: 20px;
-    /* Space between flex/grid items without adding outer margins. */
     gap: 18px;
   }
 
-  /* Within this media condition: Styles .auth-card. Class selectors start with a dot; descendant selectors contain a space. */
   .auth-card {
-    /* Space inside the element. Two values mean vertical/horizontal; three mean top/horizontal/bottom. */
     padding: 28px 24px;
   }
 
-  /* Within this media condition: Doctor weekday checkbox group laid out in three columns on wide screens. */
   .days {
-    /* Defines grid columns. fr shares available space; repeat avoids repetition; minmax(0, 1fr) lets columns shrink. */
     grid-template-columns: 1fr 1fr;
   }
 
-  /* Within this media condition: Styles #modal-content. Class selectors start with a dot; descendant selectors contain a space. */
   #modal-content {
-    /* Space inside the element. Two values mean vertical/horizontal; three mean top/horizontal/bottom. */
     padding: 20px;
   }
 
-  /* Within this media condition: Sticky dialog heading keeps its title and close button visible while the dialog scrolls. */
   .modal-heading {
-    /* Space inside the element. Two values mean vertical/horizontal; three mean top/horizontal/bottom. */
     padding: 16px 20px;
   }
 
-  /* Within this media condition: Styles .report-heading. Class selectors start with a dot; descendant selectors contain a space. */
   .report-heading {
-    /* wrap lets flex items move to another line when space is limited. */
     flex-wrap: wrap;
-    /* Space inside the element. Two values mean vertical/horizontal; three mean top/horizontal/bottom. */
     padding: 20px;
   }
 
-  /* Within this media condition: Styles .form-actions. Class selectors start with a dot; descendant selectors contain a space. */
   .form-actions {
-    /* wrap lets flex items move to another line when space is limited. */
     flex-wrap: wrap;
   }
 }
 
-/* ACCESSIBILITY: respect the user preference for reduced motion by disabling transitions. */
 @media (prefers-reduced-motion: reduce) {
-
-  /* Within this media condition: Universal selector: matches every element. */
   * {
-    /* Animates changes to the named property over the stated time; .18s is 180 milliseconds. */
     transition: none !important;
   }
 }
 
-/* PRINT PAPER: request A4 paper and margins; browser print options can override these choices. */
 @page {
-  /* Sets the printed page size. A4 is the requested paper format. */
   size: A4;
-  /* Space outside the element. Values follow top/right/bottom/left; two values mean vertical/horizontal. auto can use available space. */
-  margin: 14mm; /* Browser headers and footers must be disabled in print settings. */
+  margin: 14mm;
 }
 
-
-
-/* PRINT VIEW: simplify layout and show only the report when printing or saving as PDF. */
 @media print {
-
-  /* Within this media condition: Base page styles; removing the default body margin lets the layout reach the window edges. */
   body {
-    /* Background color or fill. transparent allows the background behind it to show. */
     background: white;
-    /* Text size. px means CSS pixels; print styles use pt (points). */
     font-size: 10pt;
   }
 
-  /* Within this media condition: Styles .sidebar, .topbar, .no-print, .toasts, dialog, .shade, .skip-link, #auth, .page-heading, .toolbar, .stats. Class selectors start with a dot; descendant selectors contain a space. */
-  .sidebar, .topbar, .no-print, .toasts, dialog, .shade, .skip-link, #auth, .page-heading, .toolbar, .stats {
-    /* Chooses the layout mode: flex/grid arrange children, block starts a block, none removes the element from layout. */
+  .sidebar,
+  .topbar,
+  .no-print,
+  .toasts,
+  dialog,
+  .shade,
+  .skip-link,
+  #auth,
+  .page-heading,
+  .toolbar,
+  .stats {
     display: none !important;
   }
 
-  /* Within this media condition: All application pages start hidden; JavaScript adds the active class to the selected page. */
   .page {
-    /* Chooses the layout mode: flex/grid arrange children, block starts a block, none removes the element from layout. */
     display: none !important;
   }
 
-  /* Within this media condition: Styles #reportsPage. Class selectors start with a dot; descendant selectors contain a space. */
   #reportsPage {
-    /* Chooses the layout mode: flex/grid arrange children, block starts a block, none removes the element from layout. */
     display: block !important;
   }
 
-  /* Within this media condition: Main application wrapper with enough left margin to avoid the fixed desktop sidebar. */
   .workspace {
-    /* Space outside the element. Values follow top/right/bottom/left; two values mean vertical/horizontal. auto can use available space. */
     margin: 0;
   }
 
-  /* Within this media condition: ID selector: styles the single element with id="main". */
   #main {
-    /* Space inside the element. Two values mean vertical/horizontal; three mean top/horizontal/bottom. */
     padding: 0;
-    /* Maximum allowed width; prevents overly wide content. */
     max-width: none;
   }
 
-  /* Within this media condition: Styles .panel. Class selectors start with a dot; descendant selectors contain a space. */
   .panel {
-    /* Border shorthand: thickness, line style and color. 0 removes the border. */
     border: 0;
-    /* Shadow values describe offsets, blur and color. inset draws inside the box (used for the active navigation accent). */
     box-shadow: none;
-    /* Space outside the element. Values follow top/right/bottom/left; two values mean vertical/horizontal. auto can use available space. */
     margin: 0;
   }
 
-  /* Within this media condition: Styles .report-heading. Class selectors start with a dot; descendant selectors contain a space. */
   .report-heading {
-    /* Space inside the element. Two values mean vertical/horizontal; three mean top/horizontal/bottom. */
     padding: 0 0 16px;
   }
 
-  /* Within this media condition: Styles .report-summary. Class selectors start with a dot; descendant selectors contain a space. */
   .report-summary {
-    /* Space inside the element. Two values mean vertical/horizontal; three mean top/horizontal/bottom. */
     padding: 20px 0;
-    /* Defines grid columns. fr shares available space; repeat avoids repetition; minmax(0, 1fr) lets columns shrink. */
     grid-template-columns: repeat(3, 1fr);
   }
 
-  /* Within this media condition: Styles .status-summary, .panel-heading. Class selectors start with a dot; descendant selectors contain a space. */
-  .status-summary, .panel-heading {
-    /* Inside spacing on the left; used to reserve room for search icons. */
+  .status-summary,
+  .panel-heading {
     padding-left: 0;
   }
 
-  /* Within this media condition: Wide tables scroll inside this wrapper rather than stretching the entire page. */
   .table-wrap {
-    /* Controls content extending outside a box. hidden clips it; visible allows it to extend. */
     overflow: visible;
   }
 
-  /* Within this media condition: Styles table. Class selectors start with a dot; descendant selectors contain a space. */
   table {
-    /* nowrap prevents line wrapping; normal allows it; pre-wrap preserves newlines while still wrapping. */
     white-space: normal;
   }
 
-  /* Within this media condition: Styles th, td. Class selectors start with a dot; descendant selectors contain a space. */
-  th, td {
-    /* Space inside the element. Two values mean vertical/horizontal; three mean top/horizontal/bottom. */
+  th,
+  td {
     padding: 9px 7px;
   }
 
-  /* Within this media condition: Styles tr, .report-summary, .report-heading. Class selectors start with a dot; descendant selectors contain a space. */
-  tr, .report-summary, .report-heading {
-    /* avoid asks the print layout not to split this element across pages; very large content may still need to split. */
+  tr,
+  .report-summary,
+  .report-heading {
     break-inside: avoid;
   }
 
-  /* Within this media condition: Styles .badge. Class selectors start with a dot; descendant selectors contain a space. */
   .badge {
-    /* exact asks the browser to preserve the chosen print colors; print preferences may still override this. */
     print-color-adjust: exact;
-    /* Browser-prefixed form of print-color-adjust for WebKit/Chromium compatibility. */
     -webkit-print-color-adjust: exact;
   }
 }
 
-/* Monthly visit charts share these styles on the dashboard and report. */
-.visits-chart { break-inside: avoid; /* Keep the title and graph on the same printed page. */ }
-.visits-chart-scroll { overflow-x: auto; /* Narrow phones can scroll to all twelve months. */ }
+.visits-chart {
+  break-inside: avoid;
+}
+
+.visits-chart-scroll {
+  overflow-x: auto;
+}
+
 .visits-chart-svg {
-  display: block; /* Remove the inline image baseline gap. */
-  width: 100%; /* Fit the panel's width. */
-  min-width: 540px; /* Keep month labels readable on small screens. */
-  height: auto; /* Preserve the SVG drawing proportions. */
+  display: block;
+  width: 100%;
+  min-width: 540px;
+  height: auto;
 }
-.visit-grid { stroke: var(--line); /* Horizontal lines show the numeric scale. */ }
-.visit-bar { fill: var(--primary); /* Use the clinic's blue theme. */ }
-.visit-tick { fill: var(--muted); font-size: 12px; /* Label months and scale values. */ }
-.visit-value { fill: var(--ink); font-size: 12px; font-weight: 600; /* Show exact counts above bars. */ }
-.visits-chart-note { padding: 0 24px 20px; color: var(--muted); /* Explain an empty graph. */ }
+
+.visit-grid {
+  stroke: var(--line);
+}
+
+.visit-bar {
+  fill: var(--primary);
+}
+
+.visit-tick {
+  fill: var(--muted);
+  font-size: 12px;
+}
+
+.visit-value {
+  fill: var(--ink);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.visits-chart-note {
+  padding: 0 24px 20px;
+  color: var(--muted);
+}
+
 @media print {
-  .visits-chart-scroll { overflow: visible; /* Print every month without a scroll area. */ }
-  .visits-chart-svg { min-width: 0; /* Fit the printable page width. */ }
-  .visit-bar { fill: var(--ink); /* Dark SVG bars remain visible without background printing. */ }
-  .visit-grid { stroke: var(--muted); /* Keep the scale visible on paper. */ }
+  .visits-chart-scroll {
+    overflow: visible;
+  }
+
+  .visits-chart-svg {
+    min-width: 0;
+  }
+
+  .visit-bar {
+    fill: var(--ink);
+  }
+
+  .visit-grid {
+    stroke: var(--muted);
+  }
 }
 
-/* Screenshot layout: the dashboard chart occupies more space than the care team. */
-.dashboard-overview { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr); gap: 24px; }
-.dashboard-overview > .panel { min-width: 0; }
-.dashboard-overview .visits-chart-svg { min-width: 0; }
-.dashboard-overview .panel-heading { padding: 26px; }
-.dashboard-overview .visits-chart-scroll { padding: 12px 22px 0; }
-.duty-list { padding: 0 26px 24px; }
-.duty-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 20px 0; border-bottom: 1px solid var(--line); }
-.duty-row:last-child { border-bottom: 0; }
-.duty-row .avatar { border-radius: 50%; }
-/* Report identity and three-column totals match the printed report. */
-.report-brand { display: flex; align-items: center; gap: 18px; }
-.report-mark { display: grid; place-items: center; width: 60px; height: 60px; flex-shrink: 0; border-radius: 50%; background: var(--primary); color: var(--white); font: italic bold 48px Georgia, serif; }
-.report-brand h2 { color: var(--primary); }
-.report .report-summary { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 30px; padding: 30px; }
-.report .report-summary strong { font-size: 30px; }
-/* Chart and status list stay together in a two-column report row. */
-.report-visuals { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 40px; padding: 12px 30px 36px; break-inside: avoid; }
-.report-visuals h3 { margin: 0 0 14px; }
-.report-visuals .visits-chart-svg { min-width: 0; }
-.report-visuals .visits-chart-note { padding: 0; }
-.report-status-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--line); }
+.dashboard-overview {
+  display: grid;
+  grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr);
+  gap: 24px;
+}
 
-.report-status-row .waiting { color: var(--warning); background: var(--warning-bg); }
+.dashboard-overview > .panel {
+  min-width: 0;
+}
 
-/* Status colors communicate meaning independently of the blue application theme. */
-.badge.available, .badge.completed { color: var(--success); background: var(--success-bg); }
-.badge.unavailable { color: var(--danger); background: var(--danger-bg); }
-.chart-year { color: var(--muted); font-weight: 600; }
+.dashboard-overview .visits-chart-svg {
+  min-width: 0;
+}
 
-/* Keep the patient choices next to the field and above the remaining form controls. */
-.patient-picker { position: relative; min-width: 0; }
-.patient-picker > input:not([type=hidden]) { width: 100%; }
-.patient-results { position: absolute; top: 76px; inset-inline: 0; z-index: 5; max-height: 240px; overflow-y: auto; background: var(--white); border: 1px solid var(--line); border-radius: 8px; box-shadow: 0 8px 24px #17203320; }
-.patient-option { display: flex; flex-direction: column; gap: 2px; padding: 10px 14px; cursor: pointer; min-height: 44px; }
-.patient-option strong { color: var(--dark); font-size: 12px; }
-.patient-option:hover, .patient-option[aria-selected=true] { background: var(--light); }
-.patient-no-match { padding: 14px; color: var(--muted); }
-.patient-result-count { display: block; color: var(--muted); margin-top: 4px; }
+.dashboard-overview .panel-heading {
+  padding: 26px;
+}
+
+.dashboard-overview .visits-chart-scroll {
+  padding: 12px 22px 0;
+}
+
+.duty-list {
+  padding: 0 26px 24px;
+}
+
+.duty-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.duty-row:last-child {
+  border-bottom: 0;
+}
+
+.duty-row .avatar {
+  border-radius: 50%;
+}
+
+.report-brand {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.report-mark {
+  display: grid;
+  place-items: center;
+  width: 60px;
+  height: 60px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--primary);
+  color: var(--white);
+  font:
+    italic bold 48px Georgia,
+    serif;
+}
+
+.report-brand h2 {
+  color: var(--primary);
+}
+
+.report .report-summary {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 30px;
+  padding: 30px;
+}
+
+.report .report-summary strong {
+  font-size: 30px;
+}
+
+.report-visuals {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+  gap: 40px;
+  padding: 12px 30px 36px;
+  break-inside: avoid;
+}
+
+.report-visuals h3 {
+  margin: 0 0 14px;
+}
+
+.report-visuals .visits-chart-svg {
+  min-width: 0;
+}
+
+.report-visuals .visits-chart-note {
+  padding: 0;
+}
+
+.report-status-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.report-status-row .waiting {
+  color: var(--warning);
+  background: var(--warning-bg);
+}
+
+.badge.available,
+.badge.completed {
+  color: var(--success);
+  background: var(--success-bg);
+}
+
+.badge.unavailable {
+  color: var(--danger);
+  background: var(--danger-bg);
+}
+
+.chart-year {
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.patient-picker {
+  position: relative;
+  min-width: 0;
+}
+
+.patient-picker > input:not([type="hidden"]) {
+  width: 100%;
+}
+
+.patient-results {
+  position: absolute;
+  top: 76px;
+  inset-inline: 0;
+  z-index: 5;
+  max-height: 240px;
+  overflow-y: auto;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: 0 8px 24px #17203320;
+}
+
+.patient-option {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 10px 14px;
+  cursor: pointer;
+  min-height: 44px;
+}
+
+.patient-option strong {
+  color: var(--dark);
+  font-size: 12px;
+}
+
+.patient-option:hover,
+.patient-option[aria-selected="true"] {
+  background: var(--light);
+}
+
+.patient-no-match {
+  padding: 14px;
+  color: var(--muted);
+}
+
+.patient-result-count {
+  display: block;
+  color: var(--muted);
+  margin-top: 4px;
+}
+
 @media print {
-  :root, body { background: white; }
-  .workspace { min-height: 0; }
-  thead { display: table-header-group; }
-  .report .panel-heading { break-after: avoid; }
+  :root,
+  body {
+    background: white;
+  }
+
+  .workspace {
+    min-height: 0;
+  }
+
+  thead {
+    display: table-header-group;
+  }
+
+  .report .panel-heading {
+    break-after: avoid;
+  }
 }
+
 @media screen and (max-width: 900px) {
-  /* Stack these sections when their columns would become too narrow. */
-  .dashboard-overview, .report-visuals { grid-template-columns: 1fr; }
+  .dashboard-overview,
+  .report-visuals {
+    grid-template-columns: 1fr;
+  }
 }
+
 @media screen and (max-width: 540px) {
-  .report .report-summary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .report-visuals { padding: 16px; }
-  .duty-row { flex-wrap: wrap; }
+  .report .report-summary {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .report-visuals {
+    padding: 16px;
+  }
+
+  .duty-row {
+    flex-wrap: wrap;
+  }
 }
+
 @media print {
-  /* Preserve the reference's side-by-side report even on an A4 print page. */
-  .report-visuals { grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 24px; padding: 12px 0 30px; }
-  .report .report-summary { padding: 22px 0; }
-  .report-mark, .visit-bar { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
-  .visit-bar { fill: var(--primary); }
-  .report-status-row { padding: 10px 0; }
+  .report-visuals {
+    grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+    gap: 24px;
+    padding: 12px 0 30px;
+  }
+
+  .report .report-summary {
+    padding: 22px 0;
+  }
+
+  .report-mark,
+  .visit-bar {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  .visit-bar {
+    fill: var(--primary);
+  }
+
+  .report-status-row {
+    padding: 10px 0;
+  }
 }
