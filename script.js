@@ -493,7 +493,7 @@ function renderAuth(mode = 'login') {
   const signup = mode === 'signup',
     reset = mode === 'reset';
   $('#auth').innerHTML =
-    `<div class="auth-card"><div class="auth-brand"><span class="logo">M</span><h1>${signup ? 'Create Account' : reset ? 'Forgot Password' : 'MetroMed Clinic'}</h1><p>${signup ? 'Create your clinic account.' : reset ? 'Reset a demo account saved in this browser.' : 'Clinic Patient Record Management System'}</p></div><form id="auth-form" novalidate>${signup ? field('Full Name', 'fullName', '', 'text', true, 'maxlength="120"') : ''}${field('Username', 'username', '', 'text', true, 'autocomplete="username" maxlength="50"')}${signup || reset ? field('Email', 'email', '', 'email', true, 'maxlength="120"') : ''}${passwordField(reset ? 'New Password' : 'Password', reset ? 'newPassword' : 'password')}${signup || reset ? passwordField('Confirm Password', 'confirmPassword') : ''}${!signup && !reset ? '<label class="check"><input name="remember" type="checkbox">Remember Me</label>' : ''}${reset ? '<p class="form-note">This demo checks your saved username and email. No reset email is sent.</p>' : ''}<p class="form-error" role="alert"></p><button class="button" type="submit">${signup ? 'Create Account' : reset ? 'Reset Password' : 'Login'}</button></form><div class="auth-links">${signup || reset ? '<a href="#login" data-auth="login">Back to Login</a>' : '<a href="#reset" data-auth="reset">Forgot Password</a><a href="#signup" data-auth="signup">Create Account</a>'}</div></div>`;
+    `<div class="auth-card"><div class="auth-brand"><span class="logo">M</span><h1>${signup ? 'Create Account' : reset ? 'Forgot Password' : 'MetroMed Clinic'}</h1><p>${signup ? 'Create your clinic account.' : reset ? 'Enter your username and email to reset your password' : 'Clinic Patient Record Management System'}</p></div><form id="auth-form" novalidate>${signup ? field('Full Name', 'fullName', '', 'text', true, 'maxlength="120"') : ''}${field('Username', 'username', '', 'text', true, 'autocomplete="username" maxlength="50"')}${signup || reset ? field('Email', 'email', '', 'email', true, 'maxlength="120"') : ''}${passwordField(reset ? 'New Password' : 'Password', reset ? 'newPassword' : 'password')}${signup || reset ? passwordField('Confirm Password', 'confirmPassword') : ''}${!signup && !reset ? '<label class="check"><input name="remember" type="checkbox">Remember Me</label>' : ''}${reset ? '<p class="form-note">Changes will be saved locally on this device.</p>' : ''}<p class="form-error" role="alert"></p><button class="button" type="submit">${signup ? 'Create Account' : reset ? 'Reset Password' : 'Login'}</button></form><div class="auth-links">${signup || reset ? '<a href="#login" data-auth="login">Back to Login</a>' : '<a href="#reset" data-auth="reset">Forgot Password</a><a href="#signup" data-auth="signup">Create Account</a>'}</div></div>`;
   bindForm(
     $('#auth-form'),
     signup ? createAccount : reset ? resetPassword : login,
@@ -684,6 +684,8 @@ function logout() {
   );
 }
 
+// ---------- Navigation and dashboard ----------
+
 function toggleMenu(open) {
   $('#sidebar').classList.toggle('open', open);
   $('#shade').hidden = !open;
@@ -841,6 +843,8 @@ function renderDashboard() {
       'New appointments can be scheduled starting tomorrow.',
     )}</section>`;
 }
+
+// ---------- Patients and medical records ----------
 
 function lastVisit(id) {
   return (
@@ -1184,6 +1188,8 @@ function archiveRecord(id) {
   );
 }
 
+// ---------- Doctors and weekly schedules ----------
+
 function renderDoctors() {
   $('#doctorsPage').innerHTML =
     heading(
@@ -1340,6 +1346,8 @@ function viewDoctorSchedule(id) {
     `${person(d.name, d.department)}<p class="form-note">Status: ${e(doctorAvailability(d))}</p><div class="schedule">${[1, 2, 3, 4, 5, 6, 0].map((day) => `<div class="schedule-row"><span>${weekdays[day]}</span><span>${d.days.includes(day) ? timeText(d.start) + ' – ' + timeText(d.end) : 'Unavailable'}</span></div>`).join('')}<div class="schedule-row"><strong>Today's Availability</strong>${badge(doctorAvailability(d))}</div></div><div class="form-actions">${button('Close', 'close', '', 'secondary')}</div>`,
   );
 }
+
+// ---------- Appointments: advance booking and conflict checks ----------
 
 function validateAppointmentDate(date) {
   return date >= tomorrow();
