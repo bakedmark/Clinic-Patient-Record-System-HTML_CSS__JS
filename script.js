@@ -945,9 +945,9 @@ function savePatient(values, form, id) {
     if (
       values[key] &&
       (!/^[+\d ()-]+$/.test(values[key]) ||
-        values[key].replace(/\D/g, '').length < 7)
+        values[key].replace(/\D/g, '').length < 11)
     )
-      errors[key] = 'Enter a valid phone number with at least 7 digits.';
+      errors[key] = 'Enter a valid phone number with at least 11 digits.';
   if (Object.keys(errors).length) return showErrors(form, errors);
   const previous = getPatient(id);
   delete values.age;
