@@ -6,9 +6,9 @@ const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
 
 const escapeHTML = (value) =>
   String(value ?? '').replace(
-    /[&<>"']/g,
+    /[&<>"']/g, // match characters that need to be escaped
     (char) =>
-      ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[
+      ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[ // map each character to its corresponding HTML entity
         char
       ],
   );
@@ -120,7 +120,7 @@ const tomorrow = () => {
   return localDate(date);
 };
 
-const parseDate = (value) => new Date(`${value}T12:00:00`);
+const parseDate = (value) => new Date(`${value}T12:00:00`);   // parse date string in YYYY-MM-DD format to Date object
 
 const formatDate = (value) =>
   value
@@ -128,8 +128,8 @@ const formatDate = (value) =>
         day: 'numeric',
         month: 'short',
         year: 'numeric',
-      })
-    : '—';
+      }) 
+    : '—'; 
 
 const minutes = (time) => Number(time.slice(0, 2)) * 60 + Number(time.slice(3));
 
@@ -443,7 +443,7 @@ function bindForm(form, handler, busyLabel = 'Saving…') {
     await new Promise((resolve) => setTimeout(resolve, 220));
 
     try {
-      handler(values, form);
+      handler(values, form); // call the provided handler function with form values and form element
     } catch {
       $('.form-error', form).textContent =
         'Unable to save. Browser storage may be full or blocked.';
@@ -455,7 +455,7 @@ function bindForm(form, handler, busyLabel = 'Saving…') {
 }
 
 function passwordError(password, username) {
-  if (password.length < 8 || !/[a-z]/i.test(password) || !/\d/.test(password))
+  if (password.length < 8 || !/[a-z]/i.test(password) || !/\d/.test(password)) // check for minimum length, at least one letter and one number
     return 'Use at least 8 characters with a letter and a number.';
   if (password.toLowerCase() === username.toLowerCase())
     return 'The password must not be the same as your username.';
@@ -467,7 +467,7 @@ function accountErrors(values, excludeId = '') {
     users = loadData('users');
   if (!/^[a-z0-9_.-]{4,50}$/i.test(values.username))
     errors.username =
-      'Use 4–50 letters, numbers, dots, underscores or hyphens.';
+      'Use 4 to 50 letters, numbers, dots, underscores or hyphens.';
   if (
     users.some(
       (user) =>
@@ -944,7 +944,7 @@ function savePatient(values, form, id) {
   for (const key of ['contact', 'emergencyPhone'])
     if (
       values[key] &&
-      (!/^[+\d ()-]+$/.test(values[key]) ||
+      (!/^[+\d ()-]+$/.test(values[key]) || // allow digits, spaces, parentheses, plus and hyphen
         values[key].replace(/\D/g, '').length < 11)
     )
       errors[key] = 'Enter a valid phone number with at least 11 digits.';
