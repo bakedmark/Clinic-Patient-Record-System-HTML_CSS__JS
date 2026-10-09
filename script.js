@@ -487,6 +487,8 @@ function accountErrors(values, excludeId = '') {
   return errors;
 }
 
+// ---------- Authentication and account profile ----------
+
 function renderAuth(mode = 'login') {
   $('#app').hidden = true;
   $('#auth').hidden = false;
@@ -852,7 +854,7 @@ function lastVisit(id) {
       .filter((r) => r.patientId === id && r.isActive)
       .map((r) => r.date)
       .sort()
-      .at(-1) || ''
+      .at(-1) || '' // return empty string if no records found
   );
 }
 
